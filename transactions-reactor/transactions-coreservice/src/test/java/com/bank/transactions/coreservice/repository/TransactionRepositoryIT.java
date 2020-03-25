@@ -12,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 
-import com.bank.transactions.coreservice.repository.TransactionRepository;
 import com.bank.transactions.coreservice.repository.entities.TransactionEntity;
 
 @DataJpaTest
@@ -31,7 +30,7 @@ public class TransactionRepositoryIT{
 		
 		TransactionEntity entity = TransactionEntity.builder().withAccount_iban(IBAN).withAmount(AMOUNT).build();
 		
-		assertNotNull(transactionRepository.save(entity).getId());
+		assertNotNull(transactionRepository.saveAndFlush(entity).getId());
 	}
 	
 	@Test
@@ -39,7 +38,7 @@ public class TransactionRepositoryIT{
 		
 		TransactionEntity entity = TransactionEntity.builder().withAccount_iban(IBAN_B).withAmount(AMOUNT).withReference(REFERENCE).build();
 		
-		entity = transactionRepository.save(entity);
+		transactionRepository.saveAndFlush(entity);
 		
 		TransactionEntity actual = transactionRepository.searchFilterByAccountSortByAmount(entity.getAccount_iban(), Sort.by(Direction.DESC, AMOUNT_PROPERTY_NAME));
 		

@@ -3,6 +3,8 @@ package com.bank.framework.coreservice.rule;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import org.springframework.stereotype.Component;
+
 import com.bank.framework.domain.Channel;
 import com.bank.framework.domain.Status;
 import com.bank.transactions.coreservice.domain.TransactionForStatusRule;
@@ -12,7 +14,7 @@ import com.deliveredtechnologies.rulebook.annotation.Rule;
 import com.deliveredtechnologies.rulebook.lang.RuleBookBuilder;
 import com.deliveredtechnologies.rulebook.model.RuleBook;
 
-@Rule
+@Component
 public class TransactionCheckStatusRule {
 
 	

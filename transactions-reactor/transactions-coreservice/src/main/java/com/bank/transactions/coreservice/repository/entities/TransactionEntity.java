@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 import com.bank.framework.domain.AbstractModelBean;
 
@@ -19,10 +19,8 @@ public class TransactionEntity extends AbstractModelBean{
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	private String reference;
-	@NotBlank(message = "Account IBAN is mandatory")
 	private String account_iban;
 	private LocalDateTime date;
-	@NotBlank(message = "Amount is mandatory")
 	private BigDecimal amount;
 	private BigDecimal fee;
 	private String description;

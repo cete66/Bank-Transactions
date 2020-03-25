@@ -14,7 +14,7 @@ import com.bank.transactions.coreservice.repository.entities.TransactionEntity;
 @EnableJpaRepositories
 @PropertySource("application.properties")
 @EnableTransactionManagement
-@EntityScan(basePackageClasses=TransactionEntity.class)
+@EntityScan
 public class H2JpaConfig {
 
 	@Autowired

@@ -27,13 +27,13 @@ import com.bank.transactions.coreservice.repository.entities.TransactionEntity;
  *
  */
 @Repository
-public interface TransactionRepository extends JpaRepository<TransactionEntity, Integer>{
+public interface TransactionRepository extends JpaRepository<TransactionEntity, Integer> {
 
 	@Query(" SELECT t FROM Transaction t WHERE t.account_iban = :iban ")
-	TransactionEntity searchFilterByAccountSortByAmount(@Param("iban") String account, Sort sort);
+	TransactionEntity searchFilterByAccountSortByAmount(@Param("iban") final String account, final Sort sort);
 	
 	@Query(" SELECT t FROM Transaction t WHERE t.reference = :reference AND ( :channel is null OR :channel = t.channel ) ")
-	TransactionEntity status(@Param("channel") String channel, @Param("reference") String reference);
+	TransactionEntity status(@Param("channel") final String channel, @Param("reference") final String reference);
 	
 }
 

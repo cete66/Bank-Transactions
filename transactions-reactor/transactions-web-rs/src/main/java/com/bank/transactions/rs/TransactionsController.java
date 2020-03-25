@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,17 +34,17 @@ public class TransactionsController {
 			path = "/create", 
 			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public TransactionWebResponse create(@RequestBody final TransactionWebRequest webRequest) {
-		return transactionManager.create(webRequest);
+	public ResponseEntity<TransactionWebResponse> create(@RequestBody final TransactionWebRequest webRequest) {
+		return ResponseEntity.ok(transactionManager.create(webRequest));
 	}
 	
 	@GetMapping("/search")
-	public TransactionWebResponse search() {
-		return null;
+	public ResponseEntity<TransactionWebResponse> search() {
+		return ResponseEntity.ok(transactionManager.search(null, null));
 	}
 	
 	@PostMapping("/status")
-	public TransactionWebResponse status() {
+	public ResponseEntity<TransactionWebResponse> status() {
 		return null;
 	}
 }
