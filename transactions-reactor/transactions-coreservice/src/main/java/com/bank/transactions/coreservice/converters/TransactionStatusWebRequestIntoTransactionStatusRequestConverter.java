@@ -1,4 +1,4 @@
-package com.bank.transactions.converters;
+package com.bank.transactions.coreservice.converters;
 
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package com.bank.transactions.converters;
+package com.bank.transactions.coreservice.converters;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -10,7 +10,7 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import com.bank.framework.domain.Status;
-import com.bank.transactions.coreservice.domain.TransactionRequest;
+import com.bank.transactions.coreservice.domain.TransactionResponse;
 import com.bank.transactions.response.TransactionWebResponse;
 
 public class TransactionRequestIntoTransactionWebResponseConverterTest {
@@ -19,8 +19,11 @@ public class TransactionRequestIntoTransactionWebResponseConverterTest {
 	private static final BigDecimal FEE = BigDecimal.ZERO;
 	private static final String REF = "ref";
 	private static final Status STATUS = Status.INVALID;
-	private final TransactionRequest toConvert = initToConvert();
-	private final TransactionRequestIntoTransactionWebResponseConverter converter = new TransactionRequestIntoTransactionWebResponseConverter();
+	private static final String IBAN = "iban";
+	private static final LocalDateTime DATE = LocalDateTime.now();
+	private static final String DESC = "desc";
+	private final TransactionResponse toConvert = initToConvert();
+	private final TransactionResponseIntoTransactionWebResponseConverter converter = new TransactionResponseIntoTransactionWebResponseConverter();
 	
 	@Test
 	public void shouldReturnNullWhenNullParameter() {
@@ -43,15 +46,21 @@ public class TransactionRequestIntoTransactionWebResponseConverterTest {
 				.withFee(FEE)
 				.withReference(REF)
 				.withStatus(STATUS)
+				.withAccount_iban(IBAN)
+				.withDate(DATE)
+				.withDescription(DESC)
 				.build();
 	}
 
-	private TransactionRequest initToConvert() {
-		return TransactionRequest.builder()
+	private TransactionResponse initToConvert() {
+		return TransactionResponse.builder()
 				.withAmount(AMOUNT)
 				.withFee(FEE)
 				.withReference(REF)
 				.withStatus(STATUS)
+				.withAccount_iban(IBAN)
+				.withDate(DATE)
+				.withDescription(DESC)
 				.build();
 	}
 

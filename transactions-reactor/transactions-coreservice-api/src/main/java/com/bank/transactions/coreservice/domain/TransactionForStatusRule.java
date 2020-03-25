@@ -1,4 +1,4 @@
-package com.bank.transactions.response;
+package com.bank.transactions.coreservice.domain;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -7,23 +7,23 @@ import java.util.Objects;
 import javax.validation.constraints.NotEmpty;
 
 import com.bank.framework.domain.AbstractModelBean;
+import com.bank.framework.domain.Channel;
 import com.bank.framework.domain.Status;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import javax.annotation.Generated;
 
-@JsonDeserialize(builder = TransactionWebResponse.TransactionWebResponseBuilder.class)
-public class TransactionWebResponse extends AbstractModelBean {
+public class TransactionForStatusRule extends AbstractModelBean {
 
 	private final String reference;
+	@NotEmpty
 	private final String account_iban;
 	private final LocalDateTime date;
+	@NotEmpty
 	private final BigDecimal amount;
 	private final BigDecimal fee;
 	private final String description;
 	private final Status status;
+	private final Channel channel;
 
-	@Generated("SparkTools")
-	private TransactionWebResponse(TransactionWebResponseBuilder builder) {
+	private TransactionForStatusRule(TransactionForStatusRuleBuilder builder) {
 		this.reference = builder.reference;
 		this.account_iban = builder.account_iban;
 		this.date = builder.date;
@@ -31,6 +31,7 @@ public class TransactionWebResponse extends AbstractModelBean {
 		this.fee = builder.fee;
 		this.description = builder.description;
 		this.status = builder.status;
+		this.channel = builder.channel;
 	}
 
 	public String getReference() {
@@ -61,9 +62,13 @@ public class TransactionWebResponse extends AbstractModelBean {
 		return status;
 	}
 
+	public Channel getChannel() {
+		return channel;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(account_iban, amount, date, description, fee, reference, status);
+		return Objects.hash(account_iban, amount, channel, date, description, fee, reference, status);
 	}
 
 	@Override
@@ -71,35 +76,25 @@ public class TransactionWebResponse extends AbstractModelBean {
 		if (this == obj) {
 			return true;
 		}
-		if (!(obj instanceof TransactionWebResponse)) {
+		if (!(obj instanceof TransactionForStatusRule)) {
 			return false;
 		}
-		TransactionWebResponse other = (TransactionWebResponse) obj;
+		TransactionForStatusRule other = (TransactionForStatusRule) obj;
 		return Objects.equals(account_iban, other.account_iban) && Objects.equals(amount, other.amount)
-				&& Objects.equals(date, other.date) && Objects.equals(description, other.description)
-				&& Objects.equals(fee, other.fee) && Objects.equals(reference, other.reference)
-				&& status == other.status;
+				&& channel == other.channel && Objects.equals(date, other.date)
+				&& Objects.equals(description, other.description) && Objects.equals(fee, other.fee)
+				&& Objects.equals(reference, other.reference) && status == other.status;
+	}
+	
+	public TransactionForStatusRuleBuilder clonebuilder() {
+		return new TransactionForStatusRuleBuilder(reference, account_iban, date, amount, fee, description, status, channel);
 	}
 
-	public TransactionWebResponseBuilder cloneBuilder() {
-		return new TransactionWebResponseBuilder(reference, account_iban, date, amount, fee, description, status);
+	public static TransactionForStatusRuleBuilder builder() {
+		return new TransactionForStatusRuleBuilder();
 	}
 
-	/**
-	 * Creates builder to build {@link TransactionWebResponse}.
-	 * 
-	 * @return created builder
-	 */
-	@Generated("SparkTools")
-	public static TransactionWebResponseBuilder builder() {
-		return new TransactionWebResponseBuilder();
-	}
-
-	/**
-	 * Builder to build {@link TransactionWebResponse}.
-	 */
-	@Generated("SparkTools")
-	public static final class TransactionWebResponseBuilder {
+	public static final class TransactionForStatusRuleBuilder {
 		private String reference;
 		private String account_iban;
 		private LocalDateTime date;
@@ -107,12 +102,13 @@ public class TransactionWebResponse extends AbstractModelBean {
 		private BigDecimal fee;
 		private String description;
 		private Status status;
+		private Channel channel;
 
-		private TransactionWebResponseBuilder() {
+		private TransactionForStatusRuleBuilder() {
 		}
-
-		public TransactionWebResponseBuilder(String reference, String account_iban, LocalDateTime date,
-				BigDecimal amount, BigDecimal fee, String description, Status status) {
+		
+		public TransactionForStatusRuleBuilder(String reference, String account_iban, LocalDateTime date,
+				BigDecimal amount, BigDecimal fee, String description, Status status, Channel channel) {
 			super();
 			this.reference = reference;
 			this.account_iban = account_iban;
@@ -121,45 +117,51 @@ public class TransactionWebResponse extends AbstractModelBean {
 			this.fee = fee;
 			this.description = description;
 			this.status = status;
+			this.channel = channel;
 		}
 
-		public TransactionWebResponseBuilder withReference(String reference) {
+		public TransactionForStatusRuleBuilder withReference(String reference) {
 			this.reference = reference;
 			return this;
 		}
 
-		public TransactionWebResponseBuilder withAccount_iban(String account_iban) {
+		public TransactionForStatusRuleBuilder withAccount_iban(String account_iban) {
 			this.account_iban = account_iban;
 			return this;
 		}
 
-		public TransactionWebResponseBuilder withDate(LocalDateTime date) {
+		public TransactionForStatusRuleBuilder withDate(LocalDateTime date) {
 			this.date = date;
 			return this;
 		}
 
-		public TransactionWebResponseBuilder withAmount(BigDecimal amount) {
+		public TransactionForStatusRuleBuilder withAmount(BigDecimal amount) {
 			this.amount = amount;
 			return this;
 		}
 
-		public TransactionWebResponseBuilder withFee(BigDecimal fee) {
+		public TransactionForStatusRuleBuilder withFee(BigDecimal fee) {
 			this.fee = fee;
 			return this;
 		}
 
-		public TransactionWebResponseBuilder withDescription(String description) {
+		public TransactionForStatusRuleBuilder withDescription(String description) {
 			this.description = description;
 			return this;
 		}
 
-		public TransactionWebResponseBuilder withStatus(Status status) {
+		public TransactionForStatusRuleBuilder withStatus(Status status) {
 			this.status = status;
 			return this;
 		}
 
-		public TransactionWebResponse build() {
-			return new TransactionWebResponse(this);
+		public TransactionForStatusRuleBuilder withChannel(Channel channel) {
+			this.channel = channel;
+			return this;
+		}
+
+		public TransactionForStatusRule build() {
+			return new TransactionForStatusRule(this);
 		}
 	}
 

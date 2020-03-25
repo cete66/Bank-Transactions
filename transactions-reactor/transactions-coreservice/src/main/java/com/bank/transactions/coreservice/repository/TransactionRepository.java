@@ -1,4 +1,4 @@
-package com.bank.transactions.repository;
+package com.bank.transactions.coreservice.repository;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.bank.framework.domain.SortOrder;
-import com.bank.transactions.repository.entities.TransactionEntity;
+import com.bank.transactions.coreservice.repository.entities.TransactionEntity;
 
 /**
  * 
@@ -32,8 +32,8 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
 	@Query(" SELECT t FROM Transaction t WHERE t.account_iban = :iban ")
 	TransactionEntity searchFilterByAccountSortByAmount(@Param("iban") String account, Sort sort);
 	
-	@Query(" SELECT t FROM Transaction t WHERE t.reference = :reference AND ( :status is null OR :status = t.status ) ")
-	TransactionEntity status(@Param("status") String status, @Param("reference") String reference);
+	@Query(" SELECT t FROM Transaction t WHERE t.reference = :reference AND ( :channel is null OR :channel = t.channel ) ")
+	TransactionEntity status(@Param("channel") String channel, @Param("reference") String reference);
 	
 }
 

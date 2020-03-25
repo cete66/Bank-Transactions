@@ -1,4 +1,4 @@
-package com.bank.transactions.repository.entities;
+package com.bank.transactions.coreservice.repository.entities;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import com.bank.framework.domain.Channel;
 import com.bank.framework.domain.Status;
 import com.bank.framework.domain.test.utils.AbstractModelBeanTest;
+import com.bank.transactions.coreservice.repository.entities.TransactionEntity;
 
 public class TransactionEntityTest extends AbstractModelBeanTest<TransactionEntity>{
 

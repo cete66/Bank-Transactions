@@ -1,4 +1,4 @@
-package com.bank.transactions.repository.entities;
+package com.bank.transactions.coreservice.repository.entities;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 
 import com.bank.framework.domain.AbstractModelBean;
 
@@ -16,17 +17,22 @@ public class TransactionEntity extends AbstractModelBean{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private final Integer id;
-	private final String reference;
-	private final String account_iban;
-	private final LocalDateTime date;
-	private final BigDecimal amount;
-	private final BigDecimal fee;
-	private final String description;
-	private final String status;
-	private final String channel;
+	private Integer id;
+	private String reference;
+	@NotBlank(message = "Account IBAN is mandatory")
+	private String account_iban;
+	private LocalDateTime date;
+	@NotBlank(message = "Amount is mandatory")
+	private BigDecimal amount;
+	private BigDecimal fee;
+	private String description;
+	private String status;
+	private String channel;
 	
-
+	public TransactionEntity() {
+		
+	}
+	
 	public TransactionEntity(Integer id, String reference, String account_iban, LocalDateTime date, BigDecimal amount,
 			BigDecimal fee, String description, String status, String channel) {
 		this.id = id;
@@ -50,6 +56,42 @@ public class TransactionEntity extends AbstractModelBean{
 		this.status = builder.status;
 		this.channel = builder.channel;
 		this.id = builder.id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
+
+	public void setAccount_iban(String account_iban) {
+		this.account_iban = account_iban;
+	}
+
+	public void setDate(LocalDateTime date) {
+		this.date = date;
+	}
+
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
+	}
+
+	public void setFee(BigDecimal fee) {
+		this.fee = fee;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public void setChannel(String channel) {
+		this.channel = channel;
 	}
 
 	public String getReference() {

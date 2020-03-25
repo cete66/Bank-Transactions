@@ -1,4 +1,4 @@
-package com.bank.transactions.converters;
+package com.bank.transactions.coreservice.converters;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 
