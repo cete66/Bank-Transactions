@@ -20,6 +20,8 @@ public class TransactionEntityTest extends AbstractModelBeanTest<TransactionEnti
 	private static final BigDecimal FEE = BigDecimal.ZERO;
 	private static final Status STATUS = Status.FUTURE;
 	private static final Channel channel = Channel.CLIENT;
+	private static final Integer id = 1;
+	private static final Integer idB = 2;
 	
 	private final TransactionEntity.Builder builder = TransactionEntity.builder()
 														.withAccount_iban(ACCOUNT_IBAN)
@@ -29,14 +31,15 @@ public class TransactionEntityTest extends AbstractModelBeanTest<TransactionEnti
 														.withFee(FEE)
 														.withReference(REF)
 														.withStatus(STATUS.getCode())
-														.withChannel(channel.getCode());
+														.withChannel(channel.getCode())
+														.withId(id);
 	
 	@Override
 	@BeforeEach
 	public void initEntities() {
 		entityA1 = builder.build();
 		entityA2 = entityA1.cloneBuilder().build();
-		entityB = builder.withAccount_iban(ACCOUNT_IBAN_B).build();
+		entityB = builder.withAccount_iban(ACCOUNT_IBAN_B).withId(idB).build();
 	}
 
 }

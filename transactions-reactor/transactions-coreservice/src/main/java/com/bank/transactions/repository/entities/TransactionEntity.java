@@ -4,10 +4,19 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import com.bank.framework.domain.AbstractModelBean;
 
+@Entity(name = "Transaction")
 public class TransactionEntity extends AbstractModelBean{
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private final Integer id;
 	private final String reference;
 	private final String account_iban;
 	private final LocalDateTime date;
@@ -16,6 +25,20 @@ public class TransactionEntity extends AbstractModelBean{
 	private final String description;
 	private final String status;
 	private final String channel;
+	
+
+	public TransactionEntity(Integer id, String reference, String account_iban, LocalDateTime date, BigDecimal amount,
+			BigDecimal fee, String description, String status, String channel) {
+		this.id = id;
+		this.reference = reference;
+		this.account_iban = account_iban;
+		this.date = date;
+		this.amount = amount;
+		this.fee = fee;
+		this.description = description;
+		this.status = status;
+		this.channel = channel;
+	}
 
 	private TransactionEntity(Builder builder) {
 		this.reference = builder.reference;
@@ -26,6 +49,7 @@ public class TransactionEntity extends AbstractModelBean{
 		this.description = builder.description;
 		this.status = builder.status;
 		this.channel = builder.channel;
+		this.id = builder.id;
 	}
 
 	public String getReference() {
@@ -60,11 +84,13 @@ public class TransactionEntity extends AbstractModelBean{
 		return channel;
 	}
 	
+	public Integer getId() {
+		return id;
+	}
 	
-
 	@Override
 	public int hashCode() {
-		return Objects.hash(account_iban, amount, channel, date, description, fee, reference, status);
+		return Objects.hash(account_iban, amount, channel, date, description, fee, id, reference, status);
 	}
 
 	@Override
@@ -79,11 +105,12 @@ public class TransactionEntity extends AbstractModelBean{
 		return Objects.equals(account_iban, other.account_iban) && Objects.equals(amount, other.amount)
 				&& Objects.equals(channel, other.channel) && Objects.equals(date, other.date)
 				&& Objects.equals(description, other.description) && Objects.equals(fee, other.fee)
-				&& Objects.equals(reference, other.reference) && Objects.equals(status, other.status);
+				&& Objects.equals(id, other.id) && Objects.equals(reference, other.reference)
+				&& Objects.equals(status, other.status);
 	}
 
 	public Builder cloneBuilder() {
-		return new Builder(reference, account_iban, date, amount, fee, description, status, channel);
+		return new Builder(reference, account_iban, date, amount, fee, description, status, channel, id);
 	}
 
 	public static Builder builder() {
@@ -99,12 +126,13 @@ public class TransactionEntity extends AbstractModelBean{
 		private String description;
 		private String status;
 		private String channel;
+		private Integer id;
 
 		private Builder() {
 		}
 		
 		public Builder(String reference, String account_iban, LocalDateTime date, BigDecimal amount, BigDecimal fee,
-				String description, String status, String channel) {
+				String description, String status, String channel, Integer id) {
 			super();
 			this.reference = reference;
 			this.account_iban = account_iban;
@@ -114,6 +142,7 @@ public class TransactionEntity extends AbstractModelBean{
 			this.description = description;
 			this.status = status;
 			this.channel = channel;
+			this.id = id;
 		}
 
 		public Builder withReference(String reference) {
@@ -153,6 +182,11 @@ public class TransactionEntity extends AbstractModelBean{
 		
 		public Builder withChannel(String channel) {
 			this.channel = channel;
+			return this;
+		}
+		
+		public Builder withId(Integer id) {
+			this.id = id;
 			return this;
 		}
 
