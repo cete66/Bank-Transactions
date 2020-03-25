@@ -3,6 +3,8 @@ package com.bank.transactions.coreservice.domain;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import org.junit.jupiter.api.BeforeEach;
+
 import com.bank.framework.domain.Status;
 import com.bank.framework.domain.test.utils.AbstractModelBeanTest;
 import com.bank.transactions.coreservice.domain.TransactionRequest;
@@ -24,6 +26,7 @@ public class TransactionRequestTest extends AbstractModelBeanTest<TransactionReq
 															.withStatus(STATUS);
 	
     @Override
+    @BeforeEach
     public void initEntities(){
         this.entityA1 = builder.build();
         this.entityA2 = entityA1.cloneBuilder().build();

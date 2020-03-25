@@ -3,6 +3,8 @@ package com.bank.transactions.repository.entities;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import org.junit.jupiter.api.BeforeEach;
+
 import com.bank.framework.domain.Channel;
 import com.bank.framework.domain.Status;
 import com.bank.framework.domain.test.utils.AbstractModelBeanTest;
@@ -30,6 +32,7 @@ public class TransactionEntityTest extends AbstractModelBeanTest<TransactionEnti
 														.withChannel(channel.getCode());
 	
 	@Override
+	@BeforeEach
 	public void initEntities() {
 		entityA1 = builder.build();
 		entityA2 = entityA1.cloneBuilder().build();

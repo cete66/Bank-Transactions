@@ -2,6 +2,8 @@ package com.bank.transactions.request;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import org.junit.jupiter.api.BeforeEach;
+
 import com.bank.framework.domain.test.utils.AbstractModelBeanTest;
 import com.bank.transactions.request.TransactionWebRequest;
 
@@ -20,6 +22,7 @@ public class TransactionWebRequestTest extends AbstractModelBeanTest<Transaction
 															.withReference(REF);
 	
     @Override
+    @BeforeEach
     public void initEntities(){
         this.entityA1 = builder.build();
         this.entityA2 = entityA1.cloneBuilder().build();

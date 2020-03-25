@@ -2,6 +2,8 @@ package com.bank.transactions.response;
 
 import java.math.BigDecimal;
 
+import org.junit.jupiter.api.BeforeEach;
+
 import com.bank.framework.domain.Status;
 import com.bank.framework.domain.test.utils.AbstractModelBeanTest;
 
@@ -15,6 +17,7 @@ public class TransactionStatusWebResponseTest extends AbstractModelBeanTest<Tran
 															.withStatus(Status.PENDING);
 	
     @Override
+    @BeforeEach
     public void initEntities(){
         this.entityA1 = builder.build();
         this.entityA2 = entityA1.cloneBuilder().build();

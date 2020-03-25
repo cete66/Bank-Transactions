@@ -50,7 +50,7 @@ public class TransactionStatusWebResponse extends AbstractModelBean {
 		if (this == obj) {
 			return true;
 		}
-		if (!(obj instanceof TransactionWebResponse)) {
+		if (!(obj instanceof TransactionStatusWebResponse)) {
 			return false;
 		}
 		TransactionStatusWebResponse other = (TransactionStatusWebResponse) obj;

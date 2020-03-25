@@ -1,5 +1,7 @@
 package com.bank.transactions.request;
 
+import org.junit.jupiter.api.BeforeEach;
+
 import com.bank.framework.domain.Channel;
 import com.bank.framework.domain.test.utils.AbstractModelBeanTest;
 
@@ -13,6 +15,7 @@ public class TransactionStatusWebRequestTest extends AbstractModelBeanTest<Trans
 			
 	
 	@Override
+	@BeforeEach
 	public void initEntities() {
 		entityA1 = builder.build();
 		entityA2 = entityA1.cloneBuilder().build();

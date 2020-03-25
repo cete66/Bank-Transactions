@@ -80,7 +80,7 @@ public class TransactionRequest extends AbstractModelBean {
 	}
 
 	public TransactionRequestBuilder cloneBuilder() {
-		return new TransactionRequestBuilder(reference, account_iban, date, amount, fee, description);
+		return new TransactionRequestBuilder(reference, account_iban, date, amount, fee, description, status);
 	}
 
 	public static TransactionRequestBuilder builder() {
@@ -100,13 +100,14 @@ public class TransactionRequest extends AbstractModelBean {
 		}
 		
 		private TransactionRequestBuilder(String reference, String account_iban, LocalDateTime date, BigDecimal amount, BigDecimal fee,
-				String description) {
+				String description, Status status) {
 			this.reference = reference;
 			this.account_iban = account_iban;
 			this.date = date;
 			this.amount = amount;
 			this.fee = fee;
 			this.description = description;
+			this.status = status;
 		}
 
 		public TransactionRequestBuilder withReference(String reference) {
