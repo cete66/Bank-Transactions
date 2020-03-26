@@ -21,12 +21,12 @@ public class TransactionEntityIntoTransactionForStatusRuleConverter implements C
 		return TransactionForStatusRule.builder()
 				.withAccount_iban(entity.getAccount_iban())
 				.withAmount(entity.getAmount())
-				.withChannel(Channel.fromString(entity.getChannel()))
+				.withChannel(entity.getChannel()!=null ? Channel.fromString(entity.getChannel()) : null)
 				.withDate(entity.getDate())
 				.withDescription(entity.getDescription())
 				.withFee(entity.getFee())
 				.withReference(entity.getReference())
-				.withStatus(Status.fromString(entity.getStatus()))
+				.withStatus(entity.getStatus()!=null ? Status.fromString(entity.getStatus()) : null)
 				.build();
 	}
 

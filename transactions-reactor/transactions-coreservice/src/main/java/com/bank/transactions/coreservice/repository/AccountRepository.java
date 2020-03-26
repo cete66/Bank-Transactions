@@ -14,4 +14,6 @@ public interface AccountRepository extends JpaRepository<TransactionEntity, Inte
 
 	@Query(" SELECT 1 FROM Account a WHERE a.iban = :iban AND a.balance - :amount > -1 ")
 	Integer checkValidTransaction(@Param("iban") final String account_iban, @Param("amount") final BigDecimal amount);
+	@Query(" UPDATE Account a SET a.balance = a.balance - :amount WHERE a.iban = :iban AND a.balance - :amount > -1 ")
+	Integer confirmTransaction(@Param("iban") final String account_iban, @Param("amount") final BigDecimal amount);
 }

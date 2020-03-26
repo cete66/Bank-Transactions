@@ -26,19 +26,22 @@ public class TransactionServiceImpl implements TransactionService{
 	private final Converter<TransactionRequest, TransactionEntity> transactionRequestConverter;
 	private final Converter<TransactionEntity, TransactionResponse> transactionEntityConverter;
 	private final Converter<TransactionEntity, TransactionForStatusRule> transactionEntityForStatusRuleConverter;
-	private final String sortAttribute;
+	private final String sortASC;
+	private final String sortDESC;
 	private final RuleBook<TransactionForStatusRule> statusRule;
 	
 	@Autowired
 	public TransactionServiceImpl(final TransactionRepository transactionRepository,
-								@Value("${com.bank.transactions.coreservice.default.sort}") final String sortAttribute,
+								@Value("${com.bank.transactions.coreservice.default.sort.ASC}") final String sortASC,
+								@Value("${com.bank.transactions.coreservice.default.sort.DESC}") final String sortDESC,
 								final Converter<TransactionForStatusRule, TransactionResponse> transactionForStatusRuleConverter,
 								final Converter<TransactionRequest, TransactionEntity> transactionRequestConverter,
 								final TransactionCheckStatusRule statusRule,
 								final Converter<TransactionEntity, TransactionForStatusRule> transactionEntityForStatusRuleConverter,
 								final Converter<TransactionEntity, TransactionResponse> transactionEntityConverter) {
 		this.transactionRepository = transactionRepository;
-		this.sortAttribute = sortAttribute;
+		this.sortASC = sortASC;
+		this.sortDESC = sortDESC;
 		this.transactionForStatusRuleConverter = transactionForStatusRuleConverter;
 		this.transactionRequestConverter = transactionRequestConverter;
 		this.statusRule = statusRule.defineRules();
@@ -70,10 +73,18 @@ public class TransactionServiceImpl implements TransactionService{
 	}
 
 	@Override
-	public TransactionResponse search(String iban, Sort sort) {
-		return transactionEntityConverter.convert(transactionRepository
-				.searchFilterByAccountSortByAmount(iban, org.springframework.data.domain.Sort.by(
-						Direction.fromString(sort.getSortParameter()), sortAttribute)));
+	public TransactionResponse search(String iban, String sort) {
+		
+		if (sort != null) {
+			if (sortASC.equals(sort.toUpperCase().trim())) {
+				return transactionEntityConverter.convert(transactionRepository
+						.searchFilterByAccountSortASCByAmount(iban));
+			} else if (sortDESC.equals(sort.toUpperCase().trim())) {
+				return transactionEntityConverter.convert(transactionRepository
+						.searchFilterByAccountSortDESCByAmount(iban));
+			}
+		}
+		return null;
 	}
 
 }

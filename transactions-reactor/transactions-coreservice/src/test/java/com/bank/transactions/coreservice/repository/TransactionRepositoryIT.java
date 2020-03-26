@@ -21,7 +21,6 @@ public class TransactionRepositoryIT{
 	private static final String IBAN_B = "ES888888888888888888";
 	private static final BigDecimal AMOUNT = BigDecimal.ONE;
 	private static final String REFERENCE = "asoiru983";
-	private static final String AMOUNT_PROPERTY_NAME = "amount";
 	@Autowired
 	private TransactionRepository transactionRepository;
 	
@@ -34,13 +33,13 @@ public class TransactionRepositoryIT{
 	}
 	
 	@Test
-	public void givenValidReferenceShouldSearchFilterByAccountSortByAmount() {
+	public void givenValidReferenceShouldSearchFilterByAccountSortASCByAmount() {
 		
 		TransactionEntity entity = TransactionEntity.builder().withAccount_iban(IBAN_B).withAmount(AMOUNT).withReference(REFERENCE).build();
 		
 		transactionRepository.saveAndFlush(entity);
 		
-		TransactionEntity actual = transactionRepository.searchFilterByAccountSortByAmount(entity.getAccount_iban(), Sort.by(Direction.DESC, AMOUNT_PROPERTY_NAME));
+		TransactionEntity actual = transactionRepository.searchFilterByAccountSortASCByAmount(entity.getAccount_iban());
 		
 		MatcherAssert.assertThat(actual, Matchers.is(entity));
 	}

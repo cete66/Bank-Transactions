@@ -14,7 +14,7 @@ public class TransactionWebResponseTest extends AbstractModelBeanTest<Transactio
 															.withAmount(BigDecimal.ONE)
 															.withFee(BigDecimal.ZERO)
 															.withReference(REF)
-															.withStatus(Status.FUTURE);
+															.withStatus(Status.FUTURE.getCode());
 	
     @Override
     @BeforeEach

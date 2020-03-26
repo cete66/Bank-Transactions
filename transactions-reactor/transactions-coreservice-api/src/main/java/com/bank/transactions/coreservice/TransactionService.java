@@ -12,5 +12,5 @@ public interface TransactionService {
 	
 	TransactionResponse status(TransactionStatusRequest statusRequest);
 	
-	TransactionResponse search(final String iban, final Sort sort);
+	TransactionResponse search(final String iban, final String sortOrder);
 }

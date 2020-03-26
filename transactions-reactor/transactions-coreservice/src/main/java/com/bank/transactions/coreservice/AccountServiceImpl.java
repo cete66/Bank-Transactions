@@ -22,4 +22,10 @@ public class AccountServiceImpl implements AccountService {
 		return accountRepository.checkValidTransaction(account_iban, amount);
 	}
 
+	@Override
+	public Integer confirmTransaction(String account_iban, BigDecimal amount) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

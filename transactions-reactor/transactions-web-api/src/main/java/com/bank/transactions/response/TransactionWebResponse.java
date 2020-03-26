@@ -20,7 +20,7 @@ public class TransactionWebResponse extends AbstractModelBean {
 	private final BigDecimal amount;
 	private final BigDecimal fee;
 	private final String description;
-	private final Status status;
+	private final String status;
 
 	@Generated("SparkTools")
 	private TransactionWebResponse(TransactionWebResponseBuilder builder) {
@@ -57,7 +57,7 @@ public class TransactionWebResponse extends AbstractModelBean {
 		return description;
 	}
 
-	public Status getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
@@ -106,13 +106,13 @@ public class TransactionWebResponse extends AbstractModelBean {
 		private BigDecimal amount;
 		private BigDecimal fee;
 		private String description;
-		private Status status;
+		private String status;
 
 		private TransactionWebResponseBuilder() {
 		}
 
 		public TransactionWebResponseBuilder(String reference, String account_iban, LocalDateTime date,
-				BigDecimal amount, BigDecimal fee, String description, Status status) {
+				BigDecimal amount, BigDecimal fee, String description, String status) {
 			super();
 			this.reference = reference;
 			this.account_iban = account_iban;
@@ -153,7 +153,7 @@ public class TransactionWebResponse extends AbstractModelBean {
 			return this;
 		}
 
-		public TransactionWebResponseBuilder withStatus(Status status) {
+		public TransactionWebResponseBuilder withStatus(String status) {
 			this.status = status;
 			return this;
 		}

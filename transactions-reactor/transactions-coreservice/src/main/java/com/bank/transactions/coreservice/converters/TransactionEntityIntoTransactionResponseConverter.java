@@ -25,7 +25,7 @@ public class TransactionEntityIntoTransactionResponseConverter implements Conver
 				.withDescription(entity.getDescription())
 				.withFee(entity.getFee())
 				.withReference(entity.getReference())
-				.withStatus(Status.fromString(entity.getStatus()))
+				.withStatus(entity.getStatus()!=null ? Status.fromString(entity.getStatus()) : null)
 				.build();
 	}
 

@@ -10,20 +10,20 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import com.bank.framework.domain.Status;
-import com.bank.transactions.coreservice.domain.TransactionResponse;
-import com.bank.transactions.response.TransactionWebResponse;
+import com.bank.transactions.coreservice.domain.TransactionRequest;
+import com.bank.transactions.coreservice.repository.entities.TransactionEntity;
 
-public class TransactionRequestIntoTransactionWebResponseConverterTest {
-	
+public class TransactionRequestIntoTransactionEntityConverterTest {
+
 	private static final BigDecimal AMOUNT = BigDecimal.ONE;
 	private static final BigDecimal FEE = BigDecimal.ZERO;
 	private static final String REF = "ref";
-	private static final String STATUS = Status.INVALID.getCode();
+	private static final Status STATUS = Status.INVALID;
 	private static final String IBAN = "iban";
 	private static final LocalDateTime DATE = LocalDateTime.now();
 	private static final String DESC = "desc";
-	private final TransactionResponse toConvert = initToConvert();
-	private final TransactionResponseIntoTransactionWebResponseConverter converter = new TransactionResponseIntoTransactionWebResponseConverter();
+	private final TransactionRequest toConvert = initToConvert();
+	private final TransactionRequestIntoTransactionEntityConverter converter = new TransactionRequestIntoTransactionEntityConverter();
 	
 	@Test
 	public void shouldReturnNullWhenNullParameter() {
@@ -33,15 +33,27 @@ public class TransactionRequestIntoTransactionWebResponseConverterTest {
 	@Test
 	public void givenValidWebRequestShouldConvertProperly() {
 		
-		TransactionWebResponse actual = converter.convert(toConvert);
+		TransactionEntity actual = converter.convert(toConvert);
 		
-		TransactionWebResponse expected = initExpected();
+		TransactionEntity expected = initExpected();
 		
 		MatcherAssert.assertThat(actual, Matchers.is(expected));
 	}
 	
-	private TransactionWebResponse initExpected() {
-		return TransactionWebResponse.builder()
+	private TransactionEntity initExpected() {
+		return TransactionEntity.builder()
+				.withAmount(AMOUNT)
+				.withFee(FEE)
+				.withReference(REF)
+				.withStatus(STATUS.getCode())
+				.withAccount_iban(IBAN)
+				.withDate(DATE)
+				.withDescription(DESC)
+				.build();
+	}
+
+	private TransactionRequest initToConvert() {
+		return TransactionRequest.builder()
 				.withAmount(AMOUNT)
 				.withFee(FEE)
 				.withReference(REF)
@@ -51,17 +63,4 @@ public class TransactionRequestIntoTransactionWebResponseConverterTest {
 				.withDescription(DESC)
 				.build();
 	}
-
-	private TransactionResponse initToConvert() {
-		return TransactionResponse.builder()
-				.withAmount(AMOUNT)
-				.withFee(FEE)
-				.withReference(REF)
-				.withStatus(Status.valueOf(STATUS))
-				.withAccount_iban(IBAN)
-				.withDate(DATE)
-				.withDescription(DESC)
-				.build();
-	}
-
 }

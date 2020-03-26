@@ -20,7 +20,7 @@ public class TransactionResponseIntoTransactionWebResponseConverter implements C
 				.withAmount(request.getAmount())
 				.withFee(request.getFee())
 				.withReference(request.getReference())
-				.withStatus(request.getStatus())
+				.withStatus(request.getStatus()!=null ? request.getStatus().getCode() : null)
 				.withAccount_iban(request.getAccount_iban())
 				.withDate(request.getDate())
 				.withDescription(request.getDescription())
