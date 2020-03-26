@@ -1,4 +1,4 @@
-package com.bank.transactions.coreservice.steps.rule;
+package com.bank.transactions.coreservice.steps;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -14,7 +14,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class TransactionCheckStatusRuleTest {
+public class TransactionCheckStatusRuleGTest {
 
 	private String reference = null;
 	private RuleBook<TransactionForStatusRule> rule;
@@ -23,22 +23,22 @@ public class TransactionCheckStatusRuleTest {
 	private TransactionForStatusRule result;
 	
 	
-	@Given("^A transaction that is not stored in our system$")
-	public void a_transaction_that_is_not_stored_in_our_system() throws Throwable {
+	@Given("^A transaction that is stored in our system$")
+	public void a_transaction_that_is_not_stored_in_our_system_G() throws Throwable {
 		reference = null;
 		transactionForStatusRule = TransactionForStatusRule.builder().withReference(reference).build();
 		factMap.put(new Fact<TransactionForStatusRule>("transaction",transactionForStatusRule));
 	}
 
 	@When("I check the status from any channel")
-	public void i_check_the_status_from_any_channel() throws Throwable {
+	public void i_check_the_status_from_any_channel_G() throws Throwable {
 		rule = new TransactionCheckStatusRule().defineRules();
 		rule.run(factMap);
 		result = (TransactionForStatusRule) rule.getResult().get().getValue();
 	}
 
 	@Then("The system returns the status {string}")
-	public void the_system_returns_the_status(String string) throws Throwable {
+	public void the_system_returns_the_status_G(String string) throws Throwable {
 		MatcherAssert.assertThat(result.getStatus(), Matchers.is(Status.fromString(string)));
 	}
 }
