@@ -7,13 +7,13 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.bank.framework.converter.Converter;
-import com.bank.framework.coreservice.rule.TransactionCheckStatusRule;
 import com.bank.transactions.coreservice.domain.TransactionForStatusRule;
 import com.bank.transactions.coreservice.domain.TransactionRequest;
 import com.bank.transactions.coreservice.domain.TransactionResponse;
 import com.bank.transactions.coreservice.domain.TransactionStatusRequest;
 import com.bank.transactions.coreservice.repository.TransactionRepository;
 import com.bank.transactions.coreservice.repository.entities.TransactionEntity;
+import com.bank.transactions.coreservice.rule.TransactionCheckStatusRule;
 import com.deliveredtechnologies.rulebook.Fact;
 import com.deliveredtechnologies.rulebook.FactMap;
 import com.deliveredtechnologies.rulebook.model.RuleBook;
@@ -27,7 +27,7 @@ public class TransactionServiceImpl implements TransactionService{
 	private final Converter<TransactionEntity, TransactionResponse> transactionEntityConverter;
 	private final Converter<TransactionEntity, TransactionForStatusRule> transactionEntityForStatusRuleConverter;
 	private final String sortAttribute;
-	private final RuleBook<Object> statusRule;
+	private final RuleBook<TransactionForStatusRule> statusRule;
 	
 	@Autowired
 	public TransactionServiceImpl(final TransactionRepository transactionRepository,
@@ -56,6 +56,10 @@ public class TransactionServiceImpl implements TransactionService{
 		
 		TransactionForStatusRule transactionStatusForRule =  transactionEntityForStatusRuleConverter.convert(transactionRepository
 		.status(statusRequest.getChannel().getCode(), statusRequest.getReference()));
+		
+		if (transactionStatusForRule == null) {
+			transactionStatusForRule = TransactionForStatusRule.builder().build();
+		}
 		
 		FactMap<TransactionForStatusRule> factMap = new FactMap<>();
 		factMap.put(new Fact<TransactionForStatusRule>("transaction",transactionStatusForRule));

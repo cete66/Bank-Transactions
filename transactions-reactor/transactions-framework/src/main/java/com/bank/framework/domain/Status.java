@@ -15,6 +15,6 @@ public enum Status {
 	}
 	
 	public static Status fromString(final String string){
-        return Status.fromString(string);
+        return Status.valueOf(string);
     }
 }

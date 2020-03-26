@@ -1,4 +1,4 @@
-package com.bank.framework.coreservice.rule;
+package com.bank.transactions.coreservice.rule;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -18,9 +18,9 @@ import com.deliveredtechnologies.rulebook.model.RuleBook;
 public class TransactionCheckStatusRule {
 
 	
-	public RuleBook<Object> defineRules() {
+	public RuleBook<TransactionForStatusRule> defineRules() {
 
-		return RuleBookBuilder.create()
+		return RuleBookBuilder.create().withResultType(TransactionForStatusRule.class).withDefaultResult(TransactionForStatusRule.builder().build())
 				/**
 				 * RULE A
 				 *  Given: A transaction that is not stored in our system
@@ -67,7 +67,7 @@ public class TransactionCheckStatusRule {
 				.addRule(rule -> rule.withFactType(TransactionForStatusRule.class)
 						.when(f -> whenConditionForRuleD(f))
 						.then((f, result) -> thenOperationforRuleD(f, result)))
-				
+			
 				/**
 				 * RULE E
 				 * Given: A transaction that is stored in our system
@@ -92,7 +92,7 @@ public class TransactionCheckStatusRule {
 				.addRule(rule -> rule.withFactType(TransactionForStatusRule.class)
 						.when(f -> whenConditionForRuleF(f))
 						.then((f, result) -> thenOperationforRuleF(f, result)))
-				
+			
 				/**
 				 * RULE G
 				 * Given: A transaction that is stored in our system
@@ -122,7 +122,7 @@ public class TransactionCheckStatusRule {
 	}
 	
 	private void thenOperationforRuleH(NameValueReferableTypeConvertibleMap<TransactionForStatusRule> f,
-			Result<Object> result) {
+			Result<TransactionForStatusRule> result) {
 		result.setValue(TransactionForStatusRule.builder()
 				.withStatus(Status.FUTURE)
 				.withReference(f.getOne().getReference())
@@ -138,7 +138,7 @@ public class TransactionCheckStatusRule {
 	}
 
 	private void thenOperationforRuleG(NameValueReferableTypeConvertibleMap<TransactionForStatusRule> f,
-			Result<Object> result) {
+			Result<TransactionForStatusRule> result) {
 		result.setValue(TransactionForStatusRule.builder()
 				.withStatus(Status.PENDING)
 				.withReference(f.getOne().getReference())
@@ -152,7 +152,7 @@ public class TransactionCheckStatusRule {
 	}
 
 	private void thenOperationforRuleF(NameValueReferableTypeConvertibleMap<TransactionForStatusRule> f,
-			Result<Object> result) {
+			Result<TransactionForStatusRule> result) {
 		result.setValue(TransactionForStatusRule.builder()
 				.withStatus(Status.FUTURE)
 				.withReference(f.getOne().getReference())
@@ -166,7 +166,7 @@ public class TransactionCheckStatusRule {
 	}
 
 	private void thenOperationforRuleE(NameValueReferableTypeConvertibleMap<TransactionForStatusRule> f,
-			Result<Object> result) {
+			Result<TransactionForStatusRule> result) {
 		result.setValue(TransactionForStatusRule.builder()
 				.withStatus(Status.PENDING)
 				.withReference(f.getOne().getReference())
@@ -182,7 +182,7 @@ public class TransactionCheckStatusRule {
 	}
 
 	private void thenOperationforRuleD(NameValueReferableTypeConvertibleMap<TransactionForStatusRule> f,
-			Result<Object> result) {
+			Result<TransactionForStatusRule> result) {
 		result.setValue(TransactionForStatusRule.builder()
 				.withStatus(Status.PENDING)
 				.withReference(f.getOne().getReference())
@@ -197,7 +197,7 @@ public class TransactionCheckStatusRule {
 	}
 
 	private void thenOperationforRuleC(NameValueReferableTypeConvertibleMap<TransactionForStatusRule> f,
-			Result<Object> result) {
+			Result<TransactionForStatusRule> result) {
 		result.setValue(TransactionForStatusRule.builder()
 				.withStatus(Status.SETTLED)
 				.withReference(f.getOne().getReference())
@@ -211,7 +211,7 @@ public class TransactionCheckStatusRule {
 				&& f.getOne().getDate()!=null && f.getOne().getDate().toLocalDate().isBefore(LocalDate.now()); 
 	}
 
-	private void thenOperationForRuleA(NameValueReferableTypeConvertibleMap<TransactionForStatusRule> f, Result<Object> result) {
+	private void thenOperationForRuleA(NameValueReferableTypeConvertibleMap<TransactionForStatusRule> f, Result<TransactionForStatusRule> result) {
 		result.setValue(TransactionForStatusRule.builder()
 				.withStatus(Status.INVALID)
 				.withReference(f.getOne().getReference()).build());
@@ -224,7 +224,7 @@ public class TransactionCheckStatusRule {
 				&& f.getOne().getDate()!=null && f.getOne().getDate().toLocalDate().isBefore(LocalDate.now()); 
 	}
 	
-	private void thenOperationforRuleB(NameValueReferableTypeConvertibleMap<TransactionForStatusRule> f, Result<Object> result) {
+	private void thenOperationforRuleB(NameValueReferableTypeConvertibleMap<TransactionForStatusRule> f, Result<TransactionForStatusRule> result) {
 		result.setValue(f.getOne().clonebuilder()
 				.withStatus(Status.SETTLED)
 				.withAmount(f.getOne().getAmount().subtract(f.getOne().getFee()!=null ? f.getOne().getFee() : BigDecimal.ZERO)).build());

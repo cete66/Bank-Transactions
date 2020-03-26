@@ -15,6 +15,6 @@ public enum SortOrder {
 	}
 
 	public static SortOrder fromString(final String order) {
-		return fromString(order);
+		return SortOrder.valueOf(order);
 	}
 }

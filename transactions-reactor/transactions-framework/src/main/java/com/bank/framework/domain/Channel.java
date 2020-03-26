@@ -15,6 +15,6 @@ public enum Channel {
 	}
 	
 	public static Channel fromString(final String string){
-        return Channel.fromString(string);
+        return Channel.valueOf(string);
     }
 }
