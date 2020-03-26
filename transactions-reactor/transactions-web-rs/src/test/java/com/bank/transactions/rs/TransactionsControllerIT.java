@@ -55,25 +55,4 @@ public class TransactionsControllerIT {
             .andExpect(status().isOk());
     }
 	
-	
-	/*@LocalServerPort
-    private int port;
-	private final String root = "/transactions";
-	private final String search = "/search";
-	private final String host = "http://localhost:";
- 
-    @Autowired
-    private TestRestTemplate restTemplate;
-    
-    @Test
-    public void searchTransaction() {
-    	
-    	Map<String, String> uri = UriComponentsBuilder.fromHttpUrl(host+port+root+search)
-    			
-    			.queryParam("iban", "ES999999999999999999").queryParam("sort", "ASC").build().getQueryParams().toSingleValueMap();
-    	
-    	System.out.println(this.restTemplate.getForObject(host+port+root+search, 
-    			TransactionWebResponse.class, uri));
-    }*/
-	
 }

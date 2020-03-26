@@ -66,7 +66,7 @@ public class TransactionResponse {
 		if (this == obj) {
 			return true;
 		}
-		if (!(obj instanceof TransactionRequest)) {
+		if (!(obj instanceof TransactionResponse)) {
 			return false;
 		}
 		TransactionResponse other = (TransactionResponse) obj;
