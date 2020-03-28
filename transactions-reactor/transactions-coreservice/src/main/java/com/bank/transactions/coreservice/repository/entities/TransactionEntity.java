@@ -4,11 +4,13 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import com.bank.framework.domain.AbstractModelBean;
 
@@ -18,21 +20,27 @@ public class TransactionEntity extends AbstractModelBean{
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
+	@Column(name = "reference", nullable = false, unique =  true)
+	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+	@GeneratedValue(generator = "UUID")
 	private String reference;
+	@Column
 	private String account_iban;
+	@Column(updatable = false)
 	private LocalDateTime date;
+	@Column
 	private BigDecimal amount;
+	@Column
 	private BigDecimal fee;
+	@Column
 	private String description;
-	private String status;
-	private String channel;
 	
 	public TransactionEntity() {
 		
 	}
 	
 	public TransactionEntity(Integer id, String reference, String account_iban, LocalDateTime date, BigDecimal amount,
-			BigDecimal fee, String description, String status, String channel) {
+			BigDecimal fee, String description) {
 		this.id = id;
 		this.reference = reference;
 		this.account_iban = account_iban;
@@ -40,8 +48,6 @@ public class TransactionEntity extends AbstractModelBean{
 		this.amount = amount;
 		this.fee = fee;
 		this.description = description;
-		this.status = status;
-		this.channel = channel;
 	}
 
 	private TransactionEntity(Builder builder) {
@@ -51,86 +57,68 @@ public class TransactionEntity extends AbstractModelBean{
 		this.amount = builder.amount;
 		this.fee = builder.fee;
 		this.description = builder.description;
-		this.status = builder.status;
-		this.channel = builder.channel;
 		this.id = builder.id;
+	}
+	
+	public Integer getId() {
+		return id;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public void setReference(String reference) {
-		this.reference = reference;
-	}
-
-	public void setAccount_iban(String account_iban) {
-		this.account_iban = account_iban;
-	}
-
-	public void setDate(LocalDateTime date) {
-		this.date = date;
-	}
-
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-	}
-
-	public void setFee(BigDecimal fee) {
-		this.fee = fee;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public void setChannel(String channel) {
-		this.channel = channel;
-	}
-
 	public String getReference() {
 		return reference;
+	}
+
+	public void setReference(String reference) {
+		this.reference = reference;
 	}
 
 	public String getAccount_iban() {
 		return account_iban;
 	}
 
+	public void setAccount_iban(String account_iban) {
+		this.account_iban = account_iban;
+	}
+
 	public LocalDateTime getDate() {
 		return date;
+	}
+
+	public void setDate(LocalDateTime date) {
+		this.date = date;
 	}
 
 	public BigDecimal getAmount() {
 		return amount;
 	}
 
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
+	}
+
 	public BigDecimal getFee() {
 		return fee;
+	}
+
+	public void setFee(BigDecimal fee) {
+		this.fee = fee;
 	}
 
 	public String getDescription() {
 		return description;
 	}
 
-	public String getStatus() {
-		return status;
+	public void setDescription(String description) {
+		this.description = description;
 	}
-	
-	public String getChannel() {
-		return channel;
-	}
-	
-	public Integer getId() {
-		return id;
-	}
-	
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(account_iban, amount, channel, date, description, fee, id, reference, status);
+		return Objects.hash(account_iban, amount, date, description, fee, id, reference);
 	}
 
 	@Override
@@ -143,14 +131,13 @@ public class TransactionEntity extends AbstractModelBean{
 		}
 		TransactionEntity other = (TransactionEntity) obj;
 		return Objects.equals(account_iban, other.account_iban) && Objects.equals(amount, other.amount)
-				&& Objects.equals(channel, other.channel) && Objects.equals(date, other.date)
-				&& Objects.equals(description, other.description) && Objects.equals(fee, other.fee)
-				&& Objects.equals(id, other.id) && Objects.equals(reference, other.reference)
-				&& Objects.equals(status, other.status);
+				&& Objects.equals(date, other.date) && Objects.equals(description, other.description) 
+				&& Objects.equals(fee, other.fee) && Objects.equals(id, other.id) 
+				&& Objects.equals(reference, other.reference);
 	}
 
 	public Builder cloneBuilder() {
-		return new Builder(reference, account_iban, date, amount, fee, description, status, channel, id);
+		return new Builder(reference, account_iban, date, amount, fee, description, id);
 	}
 
 	public static Builder builder() {
@@ -164,15 +151,13 @@ public class TransactionEntity extends AbstractModelBean{
 		private BigDecimal amount;
 		private BigDecimal fee;
 		private String description;
-		private String status;
-		private String channel;
 		private Integer id;
 
 		private Builder() {
 		}
 		
 		public Builder(String reference, String account_iban, LocalDateTime date, BigDecimal amount, BigDecimal fee,
-				String description, String status, String channel, Integer id) {
+				String description, Integer id) {
 			super();
 			this.reference = reference;
 			this.account_iban = account_iban;
@@ -180,8 +165,6 @@ public class TransactionEntity extends AbstractModelBean{
 			this.amount = amount;
 			this.fee = fee;
 			this.description = description;
-			this.status = status;
-			this.channel = channel;
 			this.id = id;
 		}
 
@@ -212,16 +195,6 @@ public class TransactionEntity extends AbstractModelBean{
 
 		public Builder withDescription(String description) {
 			this.description = description;
-			return this;
-		}
-
-		public Builder withStatus(String status) {
-			this.status = status;
-			return this;
-		}
-		
-		public Builder withChannel(String channel) {
-			this.channel = channel;
 			return this;
 		}
 		

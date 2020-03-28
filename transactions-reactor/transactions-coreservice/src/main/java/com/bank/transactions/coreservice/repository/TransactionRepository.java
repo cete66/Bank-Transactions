@@ -1,12 +1,12 @@
 package com.bank.transactions.coreservice.repository;
 
-import org.springframework.data.domain.Sort;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.bank.framework.domain.SortOrder;
 import com.bank.transactions.coreservice.repository.entities.TransactionEntity;
 
 /**
@@ -30,13 +30,13 @@ import com.bank.transactions.coreservice.repository.entities.TransactionEntity;
 public interface TransactionRepository extends JpaRepository<TransactionEntity, Integer> {
 
 	@Query(" SELECT t FROM Transaction t WHERE t.account_iban = :iban ORDER BY t.amount ASC ")
-	TransactionEntity searchFilterByAccountSortASCByAmount(@Param("iban") final String account);
+	List<TransactionEntity> searchTransactionsFilterByIbanSortASCByAmount(@Param("iban") final String account);
 	
 	@Query(" SELECT t FROM Transaction t WHERE t.account_iban = :iban ORDER BY t.amount DESC ")
-	TransactionEntity searchFilterByAccountSortDESCByAmount(@Param("iban") final String account);
+	List<TransactionEntity> searchTransactionsFilterByIbanSortDESCByAmount(@Param("iban") final String account);
 	
-	@Query(" SELECT t FROM Transaction t WHERE t.reference = :reference AND ( :channel is null OR :channel = t.channel ) ")
-	TransactionEntity status(@Param("channel") final String channel, @Param("reference") final String reference);
+	@Query(" SELECT t FROM Transaction t WHERE t.reference = :reference ")
+	TransactionEntity checkDateForStatusRule(@Param("reference") final String reference);
 	
 }
 

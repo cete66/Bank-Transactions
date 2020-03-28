@@ -1,5 +1,7 @@
 package com.bank.transactions.rs;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -42,7 +44,7 @@ public class TransactionsController {
 	@GetMapping(path = "/search",
 			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, /** for compatibility with all browsers*/
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<TransactionWebResponse> search(
+	public ResponseEntity<List<TransactionWebResponse>> search(
 			@RequestParam("iban") final String iban, 
 			@RequestParam("sort") final String sort) {
 		return ResponseEntity.ok(transactionManager.search(iban, sort));

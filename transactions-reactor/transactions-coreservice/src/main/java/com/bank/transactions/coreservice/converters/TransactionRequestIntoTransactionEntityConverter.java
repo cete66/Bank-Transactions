@@ -23,7 +23,6 @@ public class TransactionRequestIntoTransactionEntityConverter implements Convert
 				.withDescription(request.getDescription())
 				.withFee(request.getFee())
 				.withReference(request.getReference())
-				.withStatus(request.getStatus()!=null ? request.getStatus().getCode() : null)
 				.build();
 		
 	}

@@ -10,17 +10,20 @@ import com.bank.framework.domain.Status;
 import com.bank.transactions.coreservice.domain.TransactionForStatusRule;
 import com.deliveredtechnologies.rulebook.NameValueReferableTypeConvertibleMap;
 import com.deliveredtechnologies.rulebook.Result;
-import com.deliveredtechnologies.rulebook.annotation.Rule;
 import com.deliveredtechnologies.rulebook.lang.RuleBookBuilder;
 import com.deliveredtechnologies.rulebook.model.RuleBook;
 
 @Component
 public class TransactionCheckStatusRule {
 
+	public TransactionCheckStatusRule() {
+		this.defineRules();
+	}
 	
 	public RuleBook<TransactionForStatusRule> defineRules() {
 
-		return RuleBookBuilder.create().withResultType(TransactionForStatusRule.class).withDefaultResult(TransactionForStatusRule.builder().build())
+		return RuleBookBuilder.create().withResultType(TransactionForStatusRule.class)
+						.withDefaultResult(TransactionForStatusRule.builder().withStatus(Status.INVALID).build())
 				/**
 				 * RULE A
 				 *  Given: A transaction that is not stored in our system

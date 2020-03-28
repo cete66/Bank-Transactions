@@ -1,6 +1,6 @@
 package com.bank.transactions.coreservice;
 
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Sort;
+import java.util.List;
 
 import com.bank.transactions.coreservice.domain.TransactionRequest;
 import com.bank.transactions.coreservice.domain.TransactionResponse;
@@ -12,5 +12,5 @@ public interface TransactionService {
 	
 	TransactionResponse status(TransactionStatusRequest statusRequest);
 	
-	TransactionResponse search(final String iban, final String sortOrder);
+	List<TransactionResponse> search(final String iban, final String sortOrder);
 }

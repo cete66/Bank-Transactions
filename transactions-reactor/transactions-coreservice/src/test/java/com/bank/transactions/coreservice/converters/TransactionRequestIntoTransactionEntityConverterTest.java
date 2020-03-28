@@ -18,7 +18,6 @@ public class TransactionRequestIntoTransactionEntityConverterTest {
 	private static final BigDecimal AMOUNT = BigDecimal.ONE;
 	private static final BigDecimal FEE = BigDecimal.ZERO;
 	private static final String REF = "ref";
-	private static final Status STATUS = Status.INVALID;
 	private static final String IBAN = "iban";
 	private static final LocalDateTime DATE = LocalDateTime.now();
 	private static final String DESC = "desc";
@@ -45,7 +44,6 @@ public class TransactionRequestIntoTransactionEntityConverterTest {
 				.withAmount(AMOUNT)
 				.withFee(FEE)
 				.withReference(REF)
-				.withStatus(STATUS.getCode())
 				.withAccount_iban(IBAN)
 				.withDate(DATE)
 				.withDescription(DESC)
@@ -57,7 +55,6 @@ public class TransactionRequestIntoTransactionEntityConverterTest {
 				.withAmount(AMOUNT)
 				.withFee(FEE)
 				.withReference(REF)
-				.withStatus(STATUS)
 				.withAccount_iban(IBAN)
 				.withDate(DATE)
 				.withDescription(DESC)

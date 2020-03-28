@@ -16,16 +16,10 @@ public class AccountServiceImpl implements AccountService {
 	public AccountServiceImpl(final AccountRepository accountRepository) {
 		this.accountRepository = accountRepository;
 	}
-	
-	@Override
-	public Integer checkValidTransaction(String account_iban, BigDecimal amount) {
-		return accountRepository.checkValidTransaction(account_iban, amount);
-	}
 
 	@Override
-	public Integer confirmTransaction(String account_iban, BigDecimal amount) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean confirmTransaction(String account_iban, BigDecimal amount) {
+		return accountRepository.confirmTransaction(account_iban, amount) == 1;
 	}
 
 }

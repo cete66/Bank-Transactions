@@ -9,11 +9,12 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
+import com.bank.framework.domain.Channel;
 import com.bank.framework.domain.Status;
 import com.bank.transactions.coreservice.domain.TransactionForStatusRule;
-import com.bank.transactions.coreservice.repository.entities.TransactionEntity;
+import com.bank.transactions.coreservice.domain.TransactionResponse;
 
-public class TransactionEntityIntoTransactionForStatusRuleConverterTest {
+public class TransactionResponseIntoTransactionForStatusRuleConverterTest {
 
 	private static final BigDecimal AMOUNT = BigDecimal.ONE;
 	private static final BigDecimal FEE = BigDecimal.ZERO;
@@ -22,8 +23,9 @@ public class TransactionEntityIntoTransactionForStatusRuleConverterTest {
 	private static final String IBAN = "iban";
 	private static final LocalDateTime DATE = LocalDateTime.now();
 	private static final String DESC = "desc";
-	private final TransactionEntity toConvert = initToConvert();
-	private final TransactionEntityIntoTransactionForStatusRuleConverter converter = new TransactionEntityIntoTransactionForStatusRuleConverter();
+	private static final Channel CHANNEL = Channel.ATM;
+	private final TransactionResponse toConvert = initToConvert();
+	private final TransactionResponseIntoTransactionForStatusRuleConverter converter = new TransactionResponseIntoTransactionForStatusRuleConverter();
 	
 	@Test
 	public void shouldReturnNullWhenNullParameter() {
@@ -49,18 +51,20 @@ public class TransactionEntityIntoTransactionForStatusRuleConverterTest {
 				.withAccount_iban(IBAN)
 				.withDate(DATE)
 				.withDescription(DESC)
+				.withChannel(CHANNEL)
 				.build();
 	}
 
-	private TransactionEntity initToConvert() {
-		return TransactionEntity.builder()
+	private TransactionResponse initToConvert() {
+		return TransactionResponse.builder()
 				.withAmount(AMOUNT)
 				.withFee(FEE)
 				.withReference(REF)
-				.withStatus(STATUS.getCode())
+				.withStatus(STATUS)
 				.withAccount_iban(IBAN)
 				.withDate(DATE)
 				.withDescription(DESC)
+				.withChannel(CHANNEL)
 				.build();
 	}
 }

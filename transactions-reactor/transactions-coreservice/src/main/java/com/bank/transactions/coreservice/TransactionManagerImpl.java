@@ -2,24 +2,20 @@ package com.bank.transactions.coreservice;
 
 import java.math.BigDecimal;
 import java.security.InvalidParameterException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Sort;
 import org.springframework.stereotype.Service;
 
 import com.bank.framework.converter.Converter;
-import com.bank.framework.domain.SortOrder;
-import com.bank.transactions.coreservice.converters.TransactionResponseIntoTransactionWebResponseConverter;
-import com.bank.transactions.coreservice.converters.TransactionStatusWebRequestIntoTransactionStatusRequestConverter;
-import com.bank.transactions.coreservice.converters.TransactionWebRequestIntoTransactionRequestConverter;
 import com.bank.transactions.coreservice.domain.TransactionRequest;
 import com.bank.transactions.coreservice.domain.TransactionResponse;
 import com.bank.transactions.coreservice.domain.TransactionStatusRequest;
 import com.bank.transactions.request.TransactionStatusWebRequest;
 import com.bank.transactions.request.TransactionWebRequest;
 import com.bank.transactions.response.TransactionWebResponse;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators.UUIDGenerator;
 
 @Service
 public class TransactionManagerImpl implements TransactionManager {
@@ -30,7 +26,6 @@ public class TransactionManagerImpl implements TransactionManager {
 	private final Converter<TransactionStatusWebRequest, TransactionStatusRequest> transactionStatusWebRequestConverter;
 	private final Converter<TransactionResponse, TransactionWebResponse> transactionResponseConverter;
 	private final String transactionNotValidErrorMessage;
-	private final UUIDGenerator uuidGenerator = new UUIDGenerator();
 	
 	@Autowired
 	public TransactionManagerImpl(final TransactionService transacionsService,
@@ -50,25 +45,32 @@ public class TransactionManagerImpl implements TransactionManager {
 	@Override
 	public TransactionWebResponse create(final TransactionWebRequest webRequest) {
 		
-		final BigDecimal amount = webRequest.getFee()!=null ? 
-				webRequest.getAmount().subtract(webRequest.getFee()) : webRequest.getAmount();
+		TransactionRequest request = transactionWebRequestconverter.convert(webRequest);
 		
-		if (accountService.checkValidTransaction(webRequest.getAccount_iban(), amount) == 1) {
-			TransactionRequest request = transactionWebRequestconverter.convert(webRequest);
-			request = processReference(request);
-			accountService.confirmTransaction(request.getAccount_iban(), amount);
-			return this.transactionResponseConverter.convert(transactionService.create(request));
+		request = request.cloneBuilder().withAmount(processAmountAndFee(request)).build();
+		
+		if (accountService.confirmTransaction(request.getAccount_iban(), request.getAmount())) {
+			return transactionResponseConverter.convert(transactionService.create(request));
 		} else {
 			throw new InvalidParameterException(transactionNotValidErrorMessage);
 		}
-		
 	}
 
-	private TransactionRequest processReference(final TransactionRequest request) {
-		if (request!=null && (request.getReference() == null || request.getReference().trim().isEmpty()) ){
-			return request.cloneBuilder().withReference(uuidGenerator.generateId(request).toString()).build();
+	protected BigDecimal processAmountAndFee(TransactionRequest request) {
+		if (request == null) {
+			return null;
 		}
-		return request;
+		
+		BigDecimal fee = request.getFee()!=null ? request.getFee() : BigDecimal.ZERO;
+		BigDecimal amount = request.getAmount();
+		
+		if (amount.compareTo(BigDecimal.ZERO) < 0 && fee.compareTo(BigDecimal.ZERO) > 0) {
+			fee = fee.multiply(BigDecimal.valueOf(-1));
+		} else if (amount.compareTo(BigDecimal.ZERO) > 0 && fee.compareTo(BigDecimal.ZERO) < 0) {
+			fee = fee.multiply(BigDecimal.valueOf(-1));
+		}
+		
+		return amount.subtract(fee);
 	}
 
 	@Override
@@ -77,8 +79,12 @@ public class TransactionManagerImpl implements TransactionManager {
 	}
 
 	@Override
-	public TransactionWebResponse search(final String iban, final String sortOrder) {
-		return this.transactionResponseConverter.convert(transactionService.search(iban, sortOrder));
+	public List<TransactionWebResponse> search(final String iban, final String sortOrder) {
+		List<TransactionResponse> result = transactionService
+				.search(iban, sortOrder);
+		return result!=null && !result.isEmpty() ? result.stream()
+				.map(e -> transactionResponseConverter.convert(e)).collect(Collectors.toList()) : null;
+		
 	}
 
 }

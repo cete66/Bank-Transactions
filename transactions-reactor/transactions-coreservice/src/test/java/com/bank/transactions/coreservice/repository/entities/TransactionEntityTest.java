@@ -5,10 +5,7 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.BeforeEach;
 
-import com.bank.framework.domain.Channel;
-import com.bank.framework.domain.Status;
 import com.bank.framework.domain.test.utils.AbstractModelBeanTest;
-import com.bank.transactions.coreservice.repository.entities.TransactionEntity;
 
 public class TransactionEntityTest extends AbstractModelBeanTest<TransactionEntity>{
 
@@ -19,8 +16,6 @@ public class TransactionEntityTest extends AbstractModelBeanTest<TransactionEnti
 	private static final BigDecimal AMOUNT = BigDecimal.ONE;
 	private static final LocalDateTime DATE = LocalDateTime.now();
 	private static final BigDecimal FEE = BigDecimal.ZERO;
-	private static final Status STATUS = Status.FUTURE;
-	private static final Channel channel = Channel.CLIENT;
 	private static final Integer id = 1;
 	private static final Integer idB = 2;
 	
@@ -31,8 +26,6 @@ public class TransactionEntityTest extends AbstractModelBeanTest<TransactionEnti
 														.withDescription(DESC)
 														.withFee(FEE)
 														.withReference(REF)
-														.withStatus(STATUS.getCode())
-														.withChannel(channel.getCode())
 														.withId(id);
 	
 	@Override
@@ -40,7 +33,7 @@ public class TransactionEntityTest extends AbstractModelBeanTest<TransactionEnti
 	public void initEntities() {
 		entityA1 = builder.build();
 		entityA2 = entityA1.cloneBuilder().build();
-		entityB = builder.withAccount_iban(ACCOUNT_IBAN_B).withId(idB).build();
+		entityB = entityA1.cloneBuilder().withAccount_iban(ACCOUNT_IBAN_B).withId(idB).build();
 	}
 
 }

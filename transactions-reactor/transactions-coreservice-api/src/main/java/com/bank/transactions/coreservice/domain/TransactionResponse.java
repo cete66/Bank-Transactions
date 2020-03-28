@@ -4,11 +4,11 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import javax.validation.constraints.NotEmpty;
-
+import com.bank.framework.domain.AbstractModelBean;
+import com.bank.framework.domain.Channel;
 import com.bank.framework.domain.Status;
 
-public class TransactionResponse {
+public class TransactionResponse extends AbstractModelBean{
 
 	private final String reference;
 	private final String account_iban;
@@ -17,6 +17,7 @@ public class TransactionResponse {
 	private final BigDecimal fee;
 	private final String description;
 	private final Status status;
+	private final Channel channel;
 	
 	public TransactionResponse(TransactionResponseBuilder builder) {
 		this.reference = builder.reference;
@@ -26,8 +27,9 @@ public class TransactionResponse {
 		this.fee = builder.fee;
 		this.description = builder.description;
 		this.status = builder.status;
+		this.channel = builder.channel;
 	}
-
+	
 	public String getReference() {
 		return reference;
 	}
@@ -51,14 +53,18 @@ public class TransactionResponse {
 	public String getDescription() {
 		return description;
 	}
-	
+
 	public Status getStatus() {
 		return status;
 	}
-	
+
+	public Channel getChannel() {
+		return channel;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(account_iban, amount, date, description, fee, reference, status);
+		return Objects.hash(account_iban, amount, channel, date, description, fee, reference, status);
 	}
 
 	@Override
@@ -71,13 +77,13 @@ public class TransactionResponse {
 		}
 		TransactionResponse other = (TransactionResponse) obj;
 		return Objects.equals(account_iban, other.account_iban) && Objects.equals(amount, other.amount)
-				&& Objects.equals(date, other.date) && Objects.equals(description, other.description)
-				&& Objects.equals(fee, other.fee) && Objects.equals(reference, other.reference)
-				&& status == other.status;
+				&& channel == other.channel && Objects.equals(date, other.date)
+				&& Objects.equals(description, other.description) && Objects.equals(fee, other.fee)
+				&& Objects.equals(reference, other.reference) && status == other.status;
 	}
 
 	public TransactionResponseBuilder cloneBuilder() {
-		return new TransactionResponseBuilder(reference, account_iban, date, amount, fee, description, status);
+		return new TransactionResponseBuilder(reference, account_iban, date, amount, fee, description, status, channel);
 	}
 
 	public static TransactionResponseBuilder builder() {
@@ -92,12 +98,14 @@ public class TransactionResponse {
 		private BigDecimal fee;
 		private String description;
 		private Status status;
+		private Channel channel;
 
 		private TransactionResponseBuilder() {
 		}
 		
-		private TransactionResponseBuilder(String reference, String account_iban, LocalDateTime date, BigDecimal amount, BigDecimal fee,
-				String description, Status status) {
+		public TransactionResponseBuilder(String reference, String account_iban, LocalDateTime date, BigDecimal amount,
+				BigDecimal fee, String description, Status status, Channel channel) {
+			super();
 			this.reference = reference;
 			this.account_iban = account_iban;
 			this.date = date;
@@ -105,6 +113,7 @@ public class TransactionResponse {
 			this.fee = fee;
 			this.description = description;
 			this.status = status;
+			this.channel = channel;
 		}
 
 		public TransactionResponseBuilder withReference(String reference) {
@@ -139,6 +148,11 @@ public class TransactionResponse {
 		
 		public TransactionResponseBuilder withStatus(Status status) {
 			this.status = status;
+			return this;
+		}
+		
+		public TransactionResponseBuilder withChannel(Channel channel) {
+			this.channel = channel;
 			return this;
 		}
 
