@@ -104,7 +104,7 @@ public class TransactionServiceImpl implements TransactionService {
 			throw new InvalidParameterException(sortOrderInvalidErrorMessage);
 		}
 		if (result!=null && !result.isEmpty()) {
-			result.stream().map(e -> transactionEntityConverter.convert(e)).collect(Collectors.toList());
+			return result.stream().map(e -> transactionEntityConverter.convert(e)).collect(Collectors.toList());
 		}
 		return null;
 	}
