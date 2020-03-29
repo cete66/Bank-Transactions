@@ -1,6 +1,3 @@
-FROM alpine/git
-WORKDIR /Bank-Transactions
-RUN git clone https://github.com/cete66/Bank-Transactions.git
 FROM maven:3.5-jdk-8-alpine
 WORKDIR /Bank-Transactions
 COPY --from=0 /Bank-Transactions/transactions-reactor /Bank-Transactions
