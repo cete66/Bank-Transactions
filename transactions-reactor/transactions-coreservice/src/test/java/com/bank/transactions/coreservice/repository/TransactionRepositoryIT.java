@@ -44,14 +44,14 @@ public class TransactionRepositoryIT{
 	public void givenNullEntityIbanShouldThrowDataIntegrityViolationException() {
 		final TransactionEntity entity = TransactionEntity.builder().withAmount(AMOUNT).build();
 		Assertions.assertThrows(DataIntegrityViolationException.class, () -> 
-		{transactionRepository.save(entity);});
+		{transactionRepository.saveAndFlush(entity);});
 	}
 	
 	@Test
 	public void givenNullEntityAmountShouldThrowDataIntegrityViolationException() {
 		final TransactionEntity entity = TransactionEntity.builder().withAccount_iban(IBAN).build();
 		Assertions.assertThrows(DataIntegrityViolationException.class, () -> 
-		{transactionRepository.save(entity);});
+		{transactionRepository.saveAndFlush(entity);});
 	}
 	
 	@Test

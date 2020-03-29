@@ -87,7 +87,10 @@ public class TransactionServiceImplTest {
 	public void givenValidTransactionRequestCreateShouldReturnValidTransactionResponse() {
 		final TransactionRequest request = requestbuilder.build();
 		final TransactionEntity repoExpected = transactionRequestConverter.convert(request);
-		final TransactionResponse expected = transactionEntityConverter.convert(repoExpected);
+		final TransactionResponse expected = transactionEntityConverter.convert(repoExpected)
+				.cloneBuilder()
+				.withStatus(Status.PENDING)
+				.build();
 		Mockito.doReturn(repoExpected).when(transactionRepository).save(ArgumentMatchers.eq(repoExpected));
 		
 		final TransactionResponse actual = this.service.create(request);

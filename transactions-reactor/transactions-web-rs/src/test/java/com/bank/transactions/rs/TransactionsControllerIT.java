@@ -73,6 +73,55 @@ public class TransactionsControllerIT {
 	public void setup() throws Exception {
 		this.mockMvc = MockMvcBuilders.standaloneSetup(this.transactionsController).build();
 	}
+	
+	@Test
+	public void givenValidStatusAndNullChannelWebRequestShouldStatusReturnOkStatusINVALID() throws JsonProcessingException, Exception {
+
+		final TransactionWebRequest createRequest = webRequestBuilder.build();
+
+		final MockHttpServletResponse createResponse = mockMvc
+				.perform(post(ROOT + CREATE).contentType(MediaType.APPLICATION_JSON_UTF8)
+						.accept(MediaType.APPLICATION_JSON_UTF8)
+						.content(objectMapper.writeValueAsString(createRequest.cloneBuilder().withFee(null).build())))
+				.andReturn().getResponse();
+
+		final TransactionWebResponse createActual = objectMapper.readValue(createResponse.getContentAsString(),
+				TransactionWebResponse.class);
+
+		final TransactionStatusWebRequest request = TransactionStatusWebRequest.builder()
+				.withReference(createActual.getReference()).build();
+
+		final MockHttpServletResponse response = mockMvc
+				.perform(post(ROOT + STATUS).contentType(MediaType.APPLICATION_JSON_UTF8)
+						.accept(MediaType.APPLICATION_JSON_UTF8).content(objectMapper.writeValueAsString(request)))
+				.andReturn().getResponse();
+
+		final String entity = response.getContentAsString();
+		final TransactionWebResponse actual = objectMapper.readValue(entity, TransactionWebResponse.class);
+		final TransactionWebResponse expected = TransactionWebResponse.builder()
+				.withStatus(Status.INVALID.getCode())
+				.build();
+		Assertions.assertTrue(actual.getStatus().equals(expected.getStatus()));
+
+	}
+	
+	@Test
+	public void givenInvalidReferenceShouldStatusReturnOkForRuleA() throws JsonProcessingException, Exception {
+		final TransactionStatusWebRequest request = TransactionStatusWebRequest.builder()
+				.withReference("asd").build();
+
+		final MockHttpServletResponse response = mockMvc
+				.perform(post(ROOT + STATUS).contentType(MediaType.APPLICATION_JSON_UTF8)
+						.accept(MediaType.APPLICATION_JSON_UTF8).content(objectMapper.writeValueAsString(request)))
+				.andReturn().getResponse();
+		
+		final String entity = response.getContentAsString();
+		final TransactionWebResponse actual = objectMapper.readValue(entity, TransactionWebResponse.class);
+		final TransactionWebResponse expected = TransactionWebResponse.builder()
+				.withReference(null).withStatus(Status.INVALID.getCode()).build();
+		
+		Assertions.assertTrue(expected.getStatus().equals(actual.getStatus()));
+	}
 
 	@Test
 	public void givenNullReferenceShouldStatusReturnBadRequest() throws JsonProcessingException, Exception {
@@ -101,7 +150,8 @@ public class TransactionsControllerIT {
 		final TransactionWebResponse createActual = objectMapper.readValue(createResponse.getContentAsString(),
 				TransactionWebResponse.class);
 
-		final TransactionStatusWebRequest request = TransactionStatusWebRequest.builder().withChannel(Channel.CLIENT)
+		final TransactionStatusWebRequest request = TransactionStatusWebRequest.builder()
+				.withChannel(Channel.CLIENT)
 				.withReference(createActual.getReference()).build();
 
 		final MockHttpServletResponse response = mockMvc

@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import com.bank.framework.converter.Converter;
 import com.bank.framework.domain.Channel;
 import com.bank.framework.domain.Status;
+import com.bank.framework.persistence.exceptions.TransactionNotAllowedException;
 import com.bank.transactions.coreservice.converters.TransactionResponseIntoTransactionWebResponseConverter;
 import com.bank.transactions.coreservice.converters.TransactionStatusWebRequestIntoTransactionStatusRequestConverter;
 import com.bank.transactions.coreservice.converters.TransactionWebRequestIntoTransactionRequestConverter;
@@ -135,6 +136,7 @@ public class TransactionManagerImplTest {
 																.withDate(request.getDate())
 																.withDescription(DESC)
 																.withFee(FEE)
+																.withStatus(Status.PENDING)
 																.withReference(request.getReference())
 																.withStatus(Status.fromString(expected.getStatus()))
 																.build();
@@ -144,7 +146,7 @@ public class TransactionManagerImplTest {
 		Mockito.doReturn(response).when(transactionService).create(ArgumentMatchers.eq(request));
 				
 		
-		Assertions.assertThrows(InvalidParameterException.class, () -> {transactionManager.create(webRequest);});
+		Assertions.assertThrows(TransactionNotAllowedException.class, () -> {transactionManager.create(webRequest);});
 	}
 	
 	@Test
