@@ -4,12 +4,10 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import javax.validation.constraints.NotEmpty;
+import javax.annotation.Generated;
 
 import com.bank.framework.domain.AbstractModelBean;
-import com.bank.framework.domain.Status;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import javax.annotation.Generated;
 
 @JsonDeserialize(builder = TransactionWebResponse.TransactionWebResponseBuilder.class)
 public class TransactionWebResponse extends AbstractModelBean {
@@ -22,7 +20,6 @@ public class TransactionWebResponse extends AbstractModelBean {
 	private final String description;
 	private final String status;
 
-	@Generated("SparkTools")
 	private TransactionWebResponse(TransactionWebResponseBuilder builder) {
 		this.reference = builder.reference;
 		this.account_iban = builder.account_iban;
@@ -85,20 +82,10 @@ public class TransactionWebResponse extends AbstractModelBean {
 		return new TransactionWebResponseBuilder(reference, account_iban, date, amount, fee, description, status);
 	}
 
-	/**
-	 * Creates builder to build {@link TransactionWebResponse}.
-	 * 
-	 * @return created builder
-	 */
-	@Generated("SparkTools")
 	public static TransactionWebResponseBuilder builder() {
 		return new TransactionWebResponseBuilder();
 	}
 
-	/**
-	 * Builder to build {@link TransactionWebResponse}.
-	 */
-	@Generated("SparkTools")
 	public static final class TransactionWebResponseBuilder {
 		private String reference;
 		private String account_iban;

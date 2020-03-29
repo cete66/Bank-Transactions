@@ -1,6 +1,7 @@
 package com.bank.transactions.coreservice;
 
 import java.security.InvalidParameterException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,8 +10,10 @@ import org.apache.commons.lang.NullArgumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bank.framework.converter.Converter;
+import com.bank.framework.domain.Status;
 import com.bank.transactions.coreservice.domain.TransactionForStatusRule;
 import com.bank.transactions.coreservice.domain.TransactionRequest;
 import com.bank.transactions.coreservice.domain.TransactionResponse;
@@ -23,6 +26,7 @@ import com.deliveredtechnologies.rulebook.FactMap;
 import com.deliveredtechnologies.rulebook.model.RuleBook;
 
 @Service("transactionServiceImpl")
+@Transactional
 public class TransactionServiceImpl implements TransactionService {
 
 	private final TransactionRepository transactionRepository;
@@ -60,13 +64,16 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
-	public TransactionResponse create(TransactionRequest request) {
+	public TransactionResponse create(final TransactionRequest request) {
 		return transactionEntityConverter
-				.convert(transactionRepository.saveAndFlush(transactionRequestConverter.convert(request)));
+				.convert(transactionRepository.save(transactionRequestConverter.convert(request)))
+				.cloneBuilder()
+				.withStatus(Status.PENDING)
+				.build();
 	}
 
 	@Override
-	public TransactionResponse status(TransactionStatusRequest statusRequest) {
+	public TransactionResponse status(final TransactionStatusRequest statusRequest) {
 
 		final TransactionEntity entity = transactionRepository.checkDateForStatusRule(statusRequest.getReference());
 

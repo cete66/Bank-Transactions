@@ -88,7 +88,7 @@ public class TransactionServiceImplTest {
 		final TransactionRequest request = requestbuilder.build();
 		final TransactionEntity repoExpected = transactionRequestConverter.convert(request);
 		final TransactionResponse expected = transactionEntityConverter.convert(repoExpected);
-		Mockito.doReturn(repoExpected).when(transactionRepository).saveAndFlush(ArgumentMatchers.eq(repoExpected));
+		Mockito.doReturn(repoExpected).when(transactionRepository).save(ArgumentMatchers.eq(repoExpected));
 		
 		final TransactionResponse actual = this.service.create(request);
 		MatcherAssert.assertThat(actual, Matchers.is(expected));
@@ -98,7 +98,7 @@ public class TransactionServiceImplTest {
 	public void givenInvalidTransactionRequestCreateShouldThrowException() {
 		final TransactionRequest request = requestbuilder.build().cloneBuilder().withAccount_iban(null).build();
 		final TransactionEntity repoExpected = transactionRequestConverter.convert(request);
-		Mockito.doThrow(DataIntegrityViolationException.class).when(transactionRepository).saveAndFlush(ArgumentMatchers.eq(repoExpected));
+		Mockito.doThrow(DataIntegrityViolationException.class).when(transactionRepository).save(ArgumentMatchers.eq(repoExpected));
 		
 		Assertions.assertThrows(DataIntegrityViolationException.class, () -> {this.service.create(request);});
 	}

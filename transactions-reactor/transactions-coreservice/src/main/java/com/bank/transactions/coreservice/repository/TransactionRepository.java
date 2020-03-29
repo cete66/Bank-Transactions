@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bank.transactions.coreservice.repository.entities.TransactionEntity;
 
@@ -27,6 +28,7 @@ import com.bank.transactions.coreservice.repository.entities.TransactionEntity;
  *
  */
 @Repository
+@Transactional
 public interface TransactionRepository extends JpaRepository<TransactionEntity, Integer> {
 
 	@Query(" SELECT t FROM Transaction t WHERE t.account_iban = :iban ORDER BY t.amount ASC ")

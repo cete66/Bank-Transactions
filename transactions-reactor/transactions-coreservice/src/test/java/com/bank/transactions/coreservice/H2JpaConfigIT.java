@@ -20,7 +20,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @SpringBootTest
 @TestPropertySource(locations = "/application.properties")
-public class H2JpaConfigTest {
+public class H2JpaConfigIT {
 	
 	@TestConfiguration
 	static class Config {

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.bank.framework.converter.Converter;
+import com.bank.framework.persistence.exceptions.TransactionNotAllowedException;
 import com.bank.transactions.coreservice.domain.TransactionRequest;
 import com.bank.transactions.coreservice.domain.TransactionResponse;
 import com.bank.transactions.coreservice.domain.TransactionStatusRequest;
@@ -52,7 +53,7 @@ public class TransactionManagerImpl implements TransactionManager {
 		if (accountService.confirmTransaction(request.getAccount_iban(), request.getAmount())) {
 			return transactionResponseConverter.convert(transactionService.create(request));
 		} else {
-			throw new InvalidParameterException(transactionNotValidErrorMessage);
+			throw new TransactionNotAllowedException(transactionNotValidErrorMessage);
 		} 
 	}
 

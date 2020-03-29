@@ -3,13 +3,16 @@ package com.bank.transactions.coreservice.repository.entities;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.bank.framework.domain.AbstractModelBean;
@@ -20,13 +23,11 @@ public class TransactionEntity extends AbstractModelBean{
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
-	@Column(name = "reference", nullable = false, unique =  true)
-	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-	@GeneratedValue(generator = "UUID")
+	@Column(name = "REFERENCE", nullable = false, unique =  true, updatable = false)
 	private String reference;
 	@Column
 	private String account_iban;
-	@Column(updatable = false)
+	@Column(name = "DATE", updatable = false, nullable = false)
 	private LocalDateTime date;
 	@Column
 	private BigDecimal amount;
@@ -119,6 +120,16 @@ public class TransactionEntity extends AbstractModelBean{
 	@Override
 	public int hashCode() {
 		return Objects.hash(account_iban, amount, date, description, fee, id, reference);
+	}
+	
+	@PrePersist
+	private void assignDefaultValues() {
+		if (this.reference == null || "".equals(this.reference.trim())){
+			this.reference = UUID.randomUUID().toString();
+		}
+		if (this.date==null) {
+			this.date = LocalDateTime.now();
+		}
 	}
 
 	@Override

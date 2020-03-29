@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.bank.framework.domain.AbstractModelBean;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -16,7 +17,7 @@ public class TransactionWebRequest extends AbstractModelBean {
 	@NotEmpty
 	private final String account_iban;
 	private final LocalDateTime date;
-	@NotEmpty
+	@NotNull
 	private final BigDecimal amount;
 	private final BigDecimal fee;
 	private final String description;

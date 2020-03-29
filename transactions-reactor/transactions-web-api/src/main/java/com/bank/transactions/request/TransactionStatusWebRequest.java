@@ -2,7 +2,7 @@ package com.bank.transactions.request;
 
 import java.util.Objects;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 
 import com.bank.framework.domain.AbstractModelBean;
 import com.bank.framework.domain.Channel;
@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(builder = TransactionStatusWebRequest.TransactionStatusWebRequestBuilder.class)
 public class TransactionStatusWebRequest extends AbstractModelBean {
 
-	@NotEmpty
+	@NotBlank
 	private final String reference;
 	private final Channel channel;
 
