@@ -28,13 +28,13 @@ public class TransactionManagerImpl implements TransactionManager {
 	private final String transactionNotValidErrorMessage;
 	
 	@Autowired
-	public TransactionManagerImpl(final TransactionService transacionsService,
+	public TransactionManagerImpl(final TransactionService transactionService,
 			final Converter<TransactionWebRequest, TransactionRequest> transactionWebRequestconverter,
 			final Converter<TransactionStatusWebRequest, TransactionStatusRequest> transactionStatusWebRequestConverter,
 			final Converter<TransactionResponse, TransactionWebResponse> transactionResponseConverter,
 			final AccountService accountService,
 			@Value("${com.bank.transactions.coreservice.default.transaction.invalid}") final String transactionNotValidErrorMessage) {
-		this.transactionService = transacionsService;
+		this.transactionService = transactionService;
 		this.transactionWebRequestconverter = transactionWebRequestconverter;
 		this.transactionStatusWebRequestConverter = transactionStatusWebRequestConverter;
 		this.transactionResponseConverter = transactionResponseConverter;
@@ -53,10 +53,26 @@ public class TransactionManagerImpl implements TransactionManager {
 			return transactionResponseConverter.convert(transactionService.create(request));
 		} else {
 			throw new InvalidParameterException(transactionNotValidErrorMessage);
-		}
+		} 
 	}
 
-	protected BigDecimal processAmountAndFee(TransactionRequest request) {
+	@Override
+	public TransactionWebResponse status(final TransactionStatusWebRequest statusWebRequest) {
+		return this.transactionResponseConverter.convert(
+				transactionService.status(
+					transactionStatusWebRequestConverter.convert(statusWebRequest)));
+	}
+
+	@Override
+	public List<TransactionWebResponse> search(final String iban, final String sortOrder) {
+		List<TransactionResponse> result = transactionService
+				.search(iban, sortOrder);
+		return result!=null && !result.isEmpty() ? result.stream()
+				.map(e -> transactionResponseConverter.convert(e)).collect(Collectors.toList()) : null;
+		
+	}
+	
+	protected BigDecimal processAmountAndFee(final TransactionRequest request) {
 		if (request == null) {
 			return null;
 		}
@@ -71,20 +87,6 @@ public class TransactionManagerImpl implements TransactionManager {
 		}
 		
 		return amount.subtract(fee);
-	}
-
-	@Override
-	public TransactionWebResponse status(final TransactionStatusWebRequest statusWebRequest) {
-		return this.transactionResponseConverter.convert(transactionService.status(transactionStatusWebRequestConverter.convert(statusWebRequest)));
-	}
-
-	@Override
-	public List<TransactionWebResponse> search(final String iban, final String sortOrder) {
-		List<TransactionResponse> result = transactionService
-				.search(iban, sortOrder);
-		return result!=null && !result.isEmpty() ? result.stream()
-				.map(e -> transactionResponseConverter.convert(e)).collect(Collectors.toList()) : null;
-		
 	}
 
 }

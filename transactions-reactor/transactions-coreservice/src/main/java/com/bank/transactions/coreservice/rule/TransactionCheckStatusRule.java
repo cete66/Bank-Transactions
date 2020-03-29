@@ -228,7 +228,7 @@ public class TransactionCheckStatusRule {
 	}
 	
 	private void thenOperationforRuleB(NameValueReferableTypeConvertibleMap<TransactionForStatusRule> f, Result<TransactionForStatusRule> result) {
-		result.setValue(f.getOne().clonebuilder()
+		result.setValue(f.getOne().cloneBuilder()
 				.withStatus(Status.SETTLED)
 				.withAmount(f.getOne().getAmount().subtract(f.getOne().getFee()!=null ? f.getOne().getFee() : BigDecimal.ZERO)).build());
 	}

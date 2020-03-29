@@ -39,7 +39,7 @@ public class TransactionCheckStatusRuleTest {
 
 	@When("I check the status from any channel")
 	public void i_check_the_status_from_any_channel_A() throws Throwable {
-		transactionForStatusRule = transactionForStatusRule.clonebuilder().withChannel(Channel.ATM).build();
+		transactionForStatusRule = transactionForStatusRule.cloneBuilder().withChannel(Channel.ATM).build();
 		rule = new TransactionCheckStatusRule().defineRules();
 		rule.run(factMap);
 		result = (TransactionForStatusRule) rule.getResult().get().getValue();
@@ -64,19 +64,19 @@ public class TransactionCheckStatusRuleTest {
 	
 	@And("the transaction date is before today")
 	public void date_is_before_today() {
-		transactionForStatusRule = transactionForStatusRule.clonebuilder().withDate(LocalDateTime.now().minusDays(1)).build();
+		transactionForStatusRule = transactionForStatusRule.cloneBuilder().withDate(LocalDateTime.now().minusDays(1)).build();
 		Assertions.assertTrue(transactionForStatusRule.getDate().toLocalDate().isBefore(LocalDate.now()));
 	}
 	
 	@And("the transaction date is equals to today")
 	public void the_transaction_date_is_before_today_D() {
-		transactionForStatusRule = transactionForStatusRule.clonebuilder().withDate(LocalDateTime.now()).build();
+		transactionForStatusRule = transactionForStatusRule.cloneBuilder().withDate(LocalDateTime.now()).build();
 		Assertions.assertTrue(transactionForStatusRule.getDate().toLocalDate().isEqual(LocalDate.now()));
 	}
 	
 	@And("the transaction date is greater than today")
 	public void transaction_date_greater_than_today_F() {
-		transactionForStatusRule = transactionForStatusRule.clonebuilder().withDate(LocalDateTime.now().plusDays(1)).build();
+		transactionForStatusRule = transactionForStatusRule.cloneBuilder().withDate(LocalDateTime.now().plusDays(1)).build();
 		Assertions.assertTrue(transactionForStatusRule.getDate().toLocalDate().isAfter(LocalDate.now()));
 	}
 

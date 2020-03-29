@@ -3,7 +3,6 @@ package com.bank.transactions.coreservice;
 import java.math.BigDecimal;
 import java.security.InvalidParameterException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -21,7 +20,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.context.TestPropertySource;
 
 import com.bank.framework.converter.Converter;
 import com.bank.framework.domain.Channel;
@@ -45,7 +43,7 @@ public class TransactionServiceImplTest {
 	private static final String VALID_IBAN = "validIban";
 	private static final BigDecimal VALID_AMOUNT = BigDecimal.TEN;
 	private static final String DESC = "desc";
-	private static final String INVALID_IBAN = "invalidIban";
+	private static final String INVALID_SORT = "invalidSort";
 	@Mock
 	private TransactionRepository transactionRepository;
 	private TransactionServiceImpl service;
@@ -224,7 +222,7 @@ public class TransactionServiceImplTest {
 	
 	@Test
 	public void givenInvalidSortSearchShouldThrowException() {
-		Assertions.assertThrows(InvalidParameterException.class, () -> {this.service.search(VALID_IBAN, "invalid");});
+		Assertions.assertThrows(InvalidParameterException.class, () -> {this.service.search(VALID_IBAN, INVALID_SORT);});
 	}
 	
 	

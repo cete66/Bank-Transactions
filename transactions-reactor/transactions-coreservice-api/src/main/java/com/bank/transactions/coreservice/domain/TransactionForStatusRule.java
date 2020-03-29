@@ -86,7 +86,7 @@ public class TransactionForStatusRule extends AbstractModelBean {
 				&& Objects.equals(reference, other.reference) && status == other.status;
 	}
 	
-	public TransactionForStatusRuleBuilder clonebuilder() {
+	public TransactionForStatusRuleBuilder cloneBuilder() {
 		return new TransactionForStatusRuleBuilder(reference, account_iban, date, amount, fee, description, status, channel);
 	}
 
