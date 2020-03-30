@@ -4,9 +4,12 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 import com.bank.framework.domain.AbstractModelBean;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(builder = TransactionStatusWebResponse.TransactionStatusWebResponseBuilder.class)
+@JsonInclude(value = Include.NON_NULL)
 public class TransactionStatusWebResponse extends AbstractModelBean {
 
 	private final String reference;
