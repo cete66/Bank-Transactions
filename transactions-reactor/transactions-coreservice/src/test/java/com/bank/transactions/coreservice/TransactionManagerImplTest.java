@@ -22,6 +22,7 @@ import com.bank.framework.converter.Converter;
 import com.bank.framework.domain.Channel;
 import com.bank.framework.domain.Status;
 import com.bank.framework.persistence.exceptions.TransactionNotAllowedException;
+import com.bank.transactions.coreservice.converters.TransactionResponseIntoTransactionStatusWebResponseConverter;
 import com.bank.transactions.coreservice.converters.TransactionResponseIntoTransactionWebResponseConverter;
 import com.bank.transactions.coreservice.converters.TransactionStatusWebRequestIntoTransactionStatusRequestConverter;
 import com.bank.transactions.coreservice.converters.TransactionWebRequestIntoTransactionRequestConverter;
@@ -32,6 +33,7 @@ import com.bank.transactions.request.TransactionStatusWebRequest;
 import com.bank.transactions.request.TransactionStatusWebRequest.TransactionStatusWebRequestBuilder;
 import com.bank.transactions.request.TransactionWebRequest;
 import com.bank.transactions.request.TransactionWebRequest.TransactionWebRequestBuilder;
+import com.bank.transactions.response.TransactionStatusWebResponse;
 import com.bank.transactions.response.TransactionWebResponse;
 
 public class TransactionManagerImplTest {
@@ -48,6 +50,8 @@ public class TransactionManagerImplTest {
 										= new TransactionStatusWebRequestIntoTransactionStatusRequestConverter();
 	private final Converter<TransactionResponse, TransactionWebResponse> transactionResponseConverter
 										= new TransactionResponseIntoTransactionWebResponseConverter();
+	private final Converter<TransactionResponse, TransactionStatusWebResponse> transactionStatusResponseConverter
+										= new TransactionResponseIntoTransactionStatusWebResponseConverter();
 	@Value("${com.bank.transactions.coreservice.default.transaction.invalid}")
 	private final String transactionNotValidErrorMessage = "The transaction amount can't be greater than account's total balance";
 	@Value("${com.bank.transactions.coreservice.default.sort.ASC}")
@@ -75,7 +79,7 @@ public class TransactionManagerImplTest {
 	public void init() {
 		MockitoAnnotations.initMocks(this);
 		transactionManager = new TransactionManagerImpl(transactionService, transactionWebRequestconverter, transactionStatusWebRequestConverter, 
-				transactionResponseConverter, accountService, transactionNotValidErrorMessage);
+				transactionResponseConverter, accountService, transactionNotValidErrorMessage, transactionStatusResponseConverter);
 	}
 	
 	@Test
@@ -220,7 +224,7 @@ public class TransactionManagerImplTest {
 																.withReference(webRequest.getReference())
 																.withStatus(Status.PENDING)
 																.build();
-		final TransactionWebResponse expected = transactionResponseConverter.convert(expectedToConvert);
+		final TransactionStatusWebResponse expected = transactionStatusResponseConverter.convert(expectedToConvert);
 		
 		Mockito.doReturn(expectedToConvert).when(transactionService).status(ArgumentMatchers.eq(request));
 		MatcherAssert.assertThat(transactionManager.status(webRequest), Matchers.is(expected));
@@ -233,7 +237,7 @@ public class TransactionManagerImplTest {
 		final TransactionResponse expectedToConvert = TransactionResponse.builder()
 																.withStatus(Status.INVALID)
 																.build();
-		final TransactionWebResponse expected = transactionResponseConverter.convert(expectedToConvert);
+		final TransactionStatusWebResponse expected = transactionStatusResponseConverter.convert(expectedToConvert);
 		
 		Mockito.doReturn(expectedToConvert).when(transactionService).status(ArgumentMatchers.eq(request));
 		MatcherAssert.assertThat(transactionManager.status(webRequest), Matchers.is(expected));

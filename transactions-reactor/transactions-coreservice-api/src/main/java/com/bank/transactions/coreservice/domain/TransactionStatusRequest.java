@@ -2,6 +2,7 @@ package com.bank.transactions.coreservice.domain;
 
 import java.util.Objects;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 import com.bank.framework.domain.AbstractModelBean;
@@ -9,7 +10,7 @@ import com.bank.framework.domain.Channel;
 
 public class TransactionStatusRequest extends AbstractModelBean{
 
-	@NotEmpty
+	@NotBlank
 	private final String reference;
 	private final Channel channel;
 

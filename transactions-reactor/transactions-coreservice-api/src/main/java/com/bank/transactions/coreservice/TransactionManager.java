@@ -8,6 +8,7 @@ import com.bank.framework.domain.SortOrder;
 import com.bank.framework.domain.Status;
 import com.bank.transactions.request.TransactionStatusWebRequest;
 import com.bank.transactions.request.TransactionWebRequest;
+import com.bank.transactions.response.TransactionStatusWebResponse;
 import com.bank.transactions.response.TransactionWebResponse;
 
 public interface TransactionManager {
@@ -20,7 +21,7 @@ public interface TransactionManager {
 	 */
 	TransactionWebResponse create(TransactionWebRequest request);
 	
-	TransactionWebResponse status(TransactionStatusWebRequest statusRequest);
+	TransactionStatusWebResponse status(TransactionStatusWebRequest statusRequest);
 	
 	List<TransactionWebResponse> search(final String iban, final String sortOrder);
 }

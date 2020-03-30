@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 
 import org.apache.commons.lang.NullArgumentException;
 import org.hibernate.validator.constraints.Length;
@@ -16,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,10 +30,12 @@ import com.bank.framework.persistence.exceptions.TransactionNotAllowedException;
 import com.bank.transactions.coreservice.TransactionManager;
 import com.bank.transactions.request.TransactionStatusWebRequest;
 import com.bank.transactions.request.TransactionWebRequest;
+import com.bank.transactions.response.TransactionStatusWebResponse;
 import com.bank.transactions.response.TransactionWebResponse;
 
 @RestController("transactionsController")
 @RequestMapping(path = "/transactions")
+@Validated
 @SuppressWarnings("deprecation")
 public class TransactionsController {
 
@@ -65,7 +67,7 @@ public class TransactionsController {
 	@PostMapping(path = "/status",
 			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, /** for compatibility with all browsers*/
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<TransactionWebResponse> status(@Valid @RequestBody final TransactionStatusWebRequest statusWebRequest) {
+	public ResponseEntity<TransactionStatusWebResponse> status(@Valid @RequestBody final TransactionStatusWebRequest statusWebRequest) {
 		return ResponseEntity.ok(transactionManager.status(statusWebRequest));
 	}
 	

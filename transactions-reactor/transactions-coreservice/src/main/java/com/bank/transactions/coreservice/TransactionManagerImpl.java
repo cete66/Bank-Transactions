@@ -16,6 +16,7 @@ import com.bank.transactions.coreservice.domain.TransactionResponse;
 import com.bank.transactions.coreservice.domain.TransactionStatusRequest;
 import com.bank.transactions.request.TransactionStatusWebRequest;
 import com.bank.transactions.request.TransactionWebRequest;
+import com.bank.transactions.response.TransactionStatusWebResponse;
 import com.bank.transactions.response.TransactionWebResponse;
 
 @Service
@@ -26,6 +27,7 @@ public class TransactionManagerImpl implements TransactionManager {
 	private final Converter<TransactionWebRequest, TransactionRequest> transactionWebRequestconverter;
 	private final Converter<TransactionStatusWebRequest, TransactionStatusRequest> transactionStatusWebRequestConverter;
 	private final Converter<TransactionResponse, TransactionWebResponse> transactionResponseConverter;
+	private final Converter<TransactionResponse, TransactionStatusWebResponse> transactionStatusResponseConverter;
 	private final String transactionNotValidErrorMessage;
 	
 	@Autowired
@@ -34,13 +36,15 @@ public class TransactionManagerImpl implements TransactionManager {
 			final Converter<TransactionStatusWebRequest, TransactionStatusRequest> transactionStatusWebRequestConverter,
 			final Converter<TransactionResponse, TransactionWebResponse> transactionResponseConverter,
 			final AccountService accountService,
-			@Value("${com.bank.transactions.coreservice.default.transaction.invalid}") final String transactionNotValidErrorMessage) {
+			@Value("${com.bank.transactions.coreservice.default.transaction.invalid}") final String transactionNotValidErrorMessage,
+			final Converter<TransactionResponse, TransactionStatusWebResponse> transactionStatusResponseConverter) {
 		this.transactionService = transactionService;
 		this.transactionWebRequestconverter = transactionWebRequestconverter;
 		this.transactionStatusWebRequestConverter = transactionStatusWebRequestConverter;
 		this.transactionResponseConverter = transactionResponseConverter;
 		this.accountService = accountService;
 		this.transactionNotValidErrorMessage = transactionNotValidErrorMessage;
+		this.transactionStatusResponseConverter = transactionStatusResponseConverter;
 	}
 	
 	@Override
@@ -58,8 +62,8 @@ public class TransactionManagerImpl implements TransactionManager {
 	}
 
 	@Override
-	public TransactionWebResponse status(final TransactionStatusWebRequest statusWebRequest) {
-		return this.transactionResponseConverter.convert(
+	public TransactionStatusWebResponse status(final TransactionStatusWebRequest statusWebRequest) {
+		return this.transactionStatusResponseConverter.convert(
 				transactionService.status(
 					transactionStatusWebRequestConverter.convert(statusWebRequest)));
 	}

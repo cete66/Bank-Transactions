@@ -1,26 +1,20 @@
 package com.bank.transactions.response;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.BeforeEach;
 
 import com.bank.framework.domain.Status;
 import com.bank.framework.domain.test.utils.AbstractModelBeanTest;
 
-public class TransactionWebResponseTest extends AbstractModelBeanTest<TransactionWebResponse>{
+public class TransactionStatusWebResponseTest extends AbstractModelBeanTest<TransactionStatusWebResponse>{
 
 	private static final String REF = "ref";
-	private static final String IBAN = "iban";
-	private static final String DESC = "desc";
-	private final TransactionWebResponse.TransactionWebResponseBuilder builder = TransactionWebResponse.builder()
+	private final TransactionStatusWebResponse.TransactionStatusWebResponseBuilder builder = TransactionStatusWebResponse.builder()
 															.withAmount(BigDecimal.ONE)
 															.withFee(BigDecimal.ZERO)
 															.withReference(REF)
-															.withStatus(Status.FUTURE.getCode())
-															.withAccount_iban(IBAN)
-															.withDate(LocalDateTime.now())
-															.withDescription(DESC);
+															.withStatus(Status.FUTURE.getCode());
 	
     @Override
     @BeforeEach

@@ -13,8 +13,8 @@ import com.bank.framework.domain.Status;
 import com.bank.transactions.coreservice.domain.TransactionResponse;
 import com.bank.transactions.response.TransactionWebResponse;
 
-public class TransactionRequestIntoTransactionWebResponseConverterTest {
-	
+public class TransactionResponseIntoTransactionWebResponseConverterTest {
+
 	private static final BigDecimal AMOUNT = BigDecimal.ONE;
 	private static final BigDecimal FEE = BigDecimal.ZERO;
 	private static final String REF = "ref";
@@ -63,5 +63,4 @@ public class TransactionRequestIntoTransactionWebResponseConverterTest {
 				.withDescription(DESC)
 				.build();
 	}
-
 }

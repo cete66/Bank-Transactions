@@ -13,7 +13,7 @@
 	<name>transactions-reactor</name>
 	<packaging>pom</packaging>
 	<modules>
-		<module>transactions-war</module>
+		<!-- <module>transactions-war</module> -->
 		<module>transactions-web-rs</module>
 		<module>transactions-coreservice</module>
 		<module>transactions-coreservice-api</module>

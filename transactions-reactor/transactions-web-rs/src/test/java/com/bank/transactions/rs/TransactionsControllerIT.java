@@ -34,6 +34,7 @@ import com.bank.transactions.TransactionServiceApplication;
 import com.bank.transactions.request.TransactionStatusWebRequest;
 import com.bank.transactions.request.TransactionWebRequest;
 import com.bank.transactions.request.TransactionWebRequest.TransactionWebRequestBuilder;
+import com.bank.transactions.response.TransactionStatusWebResponse;
 import com.bank.transactions.response.TransactionWebResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -97,8 +98,8 @@ public class TransactionsControllerIT {
 				.andReturn().getResponse();
 
 		final String entity = response.getContentAsString();
-		final TransactionWebResponse actual = objectMapper.readValue(entity, TransactionWebResponse.class);
-		final TransactionWebResponse expected = TransactionWebResponse.builder()
+		final TransactionStatusWebResponse actual = objectMapper.readValue(entity, TransactionStatusWebResponse.class);
+		final TransactionStatusWebResponse expected = TransactionStatusWebResponse.builder()
 				.withStatus(Status.INVALID.getCode())
 				.build();
 		Assertions.assertTrue(actual.getStatus().equals(expected.getStatus()));
@@ -116,8 +117,8 @@ public class TransactionsControllerIT {
 				.andReturn().getResponse();
 		
 		final String entity = response.getContentAsString();
-		final TransactionWebResponse actual = objectMapper.readValue(entity, TransactionWebResponse.class);
-		final TransactionWebResponse expected = TransactionWebResponse.builder()
+		final TransactionStatusWebResponse actual = objectMapper.readValue(entity, TransactionStatusWebResponse.class);
+		final TransactionStatusWebResponse expected = TransactionStatusWebResponse.builder()
 				.withReference(null).withStatus(Status.INVALID.getCode()).build();
 		
 		Assertions.assertTrue(expected.getStatus().equals(actual.getStatus()));
@@ -160,8 +161,8 @@ public class TransactionsControllerIT {
 				.andReturn().getResponse();
 
 		final String entity = response.getContentAsString();
-		final TransactionWebResponse actual = objectMapper.readValue(entity, TransactionWebResponse.class);
-		final TransactionWebResponse expected = TransactionWebResponse.builder()
+		final TransactionStatusWebResponse actual = objectMapper.readValue(entity, TransactionStatusWebResponse.class);
+		final TransactionStatusWebResponse expected = TransactionStatusWebResponse.builder()
 				.withReference(createActual.getReference()).withStatus(createActual.getStatus())
 				.withAmount(createActual.getAmount()).build();
 		Assertions.assertTrue(expected.getReference().equals(actual.getReference())
