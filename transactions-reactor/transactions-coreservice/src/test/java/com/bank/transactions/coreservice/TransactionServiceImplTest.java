@@ -1,26 +1,5 @@
 package com.bank.transactions.coreservice;
 
-import java.math.BigDecimal;
-import java.security.InvalidParameterException;
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang.NullArgumentException;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.DataIntegrityViolationException;
-
 import com.bank.framework.converter.Converter;
 import com.bank.framework.domain.Channel;
 import com.bank.framework.domain.Status;
@@ -36,6 +15,25 @@ import com.bank.transactions.coreservice.domain.TransactionStatusRequest;
 import com.bank.transactions.coreservice.repository.TransactionRepository;
 import com.bank.transactions.coreservice.repository.entities.TransactionEntity;
 import com.bank.transactions.coreservice.rule.TransactionCheckStatusRule;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
+
+import java.math.BigDecimal;
+import java.security.InvalidParameterException;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class TransactionServiceImplTest {
 
@@ -79,8 +77,7 @@ public class TransactionServiceImplTest {
 		MockitoAnnotations.initMocks(this);
 		this.service = new TransactionServiceImpl(transactionRepository, sortASC, sortDESC, 
 				transactionForStatusRuleConverter, transactionRequestConverter, statusRule, 
-				transactionResponseForStatusRuleConverter, transactionEntityConverter, 
-				sortOrderNullErrorMessage, sortOrderInvalidErrorMessage);
+				transactionResponseForStatusRuleConverter, transactionEntityConverter, sortOrderInvalidErrorMessage);
 	}
 	
 	@Test
@@ -220,7 +217,7 @@ public class TransactionServiceImplTest {
 	
 	@Test
 	public void givenNullSortSearchShouldThrowException() {
-		Assertions.assertThrows(NullArgumentException.class, () -> {this.service.search(VALID_IBAN, null);});
+		Assertions.assertThrows(InvalidParameterException.class, () -> {this.service.search(VALID_IBAN, null);});
 	}
 	
 	@Test

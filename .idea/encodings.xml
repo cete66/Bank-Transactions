@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/transactions-reactor" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/transactions-reactor/transactions-coreservice" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/transactions-reactor/transactions-coreservice-api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/transactions-reactor/transactions-framework" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/transactions-reactor/transactions-framework-test-utils" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/transactions-reactor/transactions-web-api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/transactions-reactor/transactions-web-rs" charset="UTF-8" />
+  </component>
+</project>

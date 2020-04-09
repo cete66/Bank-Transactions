@@ -1,14 +1,11 @@
 package com.bank.transactions.rs;
 
-import java.security.InvalidParameterException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-
-import org.apache.commons.lang.NullArgumentException;
+import com.bank.framework.persistence.exceptions.TransactionNotAllowedException;
+import com.bank.transactions.coreservice.TransactionManager;
+import com.bank.transactions.request.TransactionStatusWebRequest;
+import com.bank.transactions.request.TransactionWebRequest;
+import com.bank.transactions.response.TransactionStatusWebResponse;
+import com.bank.transactions.response.TransactionWebResponse;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,21 +14,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.bank.framework.persistence.exceptions.TransactionNotAllowedException;
-import com.bank.transactions.coreservice.TransactionManager;
-import com.bank.transactions.request.TransactionStatusWebRequest;
-import com.bank.transactions.request.TransactionWebRequest;
-import com.bank.transactions.response.TransactionStatusWebResponse;
-import com.bank.transactions.response.TransactionWebResponse;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import java.security.InvalidParameterException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController("transactionsController")
 @RequestMapping(path = "/transactions")
@@ -73,7 +63,7 @@ public class TransactionsController {
 	
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 	@ExceptionHandler({	InvalidParameterException.class,
-						NullArgumentException.class})
+						NullPointerException.class})
 	public Map<String, String> handleValidationExceptions(
 	  Exception ex) {
 	    Map<String, String> errors = new HashMap<>();

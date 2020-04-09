@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/transactions-reactor/transactions-coreservice/transactions-coreservice.iml" filepath="$PROJECT_DIR$/transactions-reactor/transactions-coreservice/transactions-coreservice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/transactions-reactor/transactions-coreservice-api/transactions-coreservice-api.iml" filepath="$PROJECT_DIR$/transactions-reactor/transactions-coreservice-api/transactions-coreservice-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/transactions-reactor/transactions-framework/transactions-framework.iml" filepath="$PROJECT_DIR$/transactions-reactor/transactions-framework/transactions-framework.iml" />
+      <module fileurl="file://$PROJECT_DIR$/transactions-reactor/transactions-framework-test-utils/transactions-framework-test-utils.iml" filepath="$PROJECT_DIR$/transactions-reactor/transactions-framework-test-utils/transactions-framework-test-utils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/transactions-reactor/transactions-reactor.iml" filepath="$PROJECT_DIR$/transactions-reactor/transactions-reactor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/transactions-reactor/transactions-web-api/transactions-web-api.iml" filepath="$PROJECT_DIR$/transactions-reactor/transactions-web-api/transactions-web-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/transactions-reactor/transactions-web-rs/transactions-web-rs.iml" filepath="$PROJECT_DIR$/transactions-reactor/transactions-web-rs/transactions-web-rs.iml" />
+    </modules>
+  </component>
+</project>

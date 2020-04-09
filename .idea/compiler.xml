@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="transactions-web-rs" />
+        <module name="transactions-coreservice" />
+        <module name="transactions-framework-test-utils" />
+        <module name="transactions-web-api" />
+        <module name="transactions-framework" />
+        <module name="transactions-coreservice-api" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="transactions-coreservice" target="11" />
+      <module name="transactions-coreservice-api" target="11" />
+      <module name="transactions-framework" target="11" />
+      <module name="transactions-framework-test-utils" target="11" />
+      <module name="transactions-reactor" target="11" />
+      <module name="transactions-web-api" target="11" />
+      <module name="transactions-web-rs" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="transactions-coreservice" options="-parameters" />
+      <module name="transactions-coreservice-api" options="-parameters" />
+      <module name="transactions-framework" options="-parameters" />
+      <module name="transactions-framework-test-utils" options="-parameters" />
+      <module name="transactions-web-api" options="-parameters" />
+      <module name="transactions-web-rs" options="-parameters" />
+    </option>
+  </component>
+</project>

@@ -1,17 +1,5 @@
 package com.bank.transactions.coreservice;
 
-import java.security.InvalidParameterException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang.NullArgumentException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.bank.framework.converter.Converter;
 import com.bank.framework.domain.Status;
 import com.bank.transactions.coreservice.domain.TransactionForStatusRule;
@@ -24,6 +12,15 @@ import com.bank.transactions.coreservice.rule.TransactionCheckStatusRule;
 import com.deliveredtechnologies.rulebook.Fact;
 import com.deliveredtechnologies.rulebook.FactMap;
 import com.deliveredtechnologies.rulebook.model.RuleBook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.security.InvalidParameterException;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service("transactionServiceImpl")
 @Transactional
@@ -37,7 +34,6 @@ public class TransactionServiceImpl implements TransactionService {
 	private final String sortASC;
 	private final String sortDESC;
 	private final RuleBook<TransactionForStatusRule> statusRule;
-	private final String sortOrderNullErrorMessage;
 	private final String sortOrderInvalidErrorMessage;
 
 	@Autowired
@@ -49,7 +45,6 @@ public class TransactionServiceImpl implements TransactionService {
 			final TransactionCheckStatusRule statusRule,
 			final Converter<TransactionResponse, TransactionForStatusRule> transactionResponseForStatusRuleConverter,
 			final Converter<TransactionEntity, TransactionResponse> transactionEntityConverter,
-			@Value("${com.bank.transactions.coreservice.default.sortOrder.null}") final String sortOrderNullErrorMessage,
 			@Value("${com.bank.transactions.coreservice.default.sortOrder.invalid}") final String sortOrderInvalidErrorMessage) {
 		this.transactionRepository = transactionRepository;
 		this.sortASC = sortASC;
@@ -59,7 +54,6 @@ public class TransactionServiceImpl implements TransactionService {
 		this.statusRule = statusRule.defineRules();
 		this.transactionResponseForStatusRuleConverter = transactionResponseForStatusRuleConverter;
 		this.transactionEntityConverter = transactionEntityConverter;
-		this.sortOrderNullErrorMessage = sortOrderNullErrorMessage;
 		this.sortOrderInvalidErrorMessage = sortOrderInvalidErrorMessage;
 	}
 
@@ -90,7 +84,7 @@ public class TransactionServiceImpl implements TransactionService {
 		FactMap<TransactionForStatusRule> factMap = new FactMap<>();
 		factMap.put(new Fact<TransactionForStatusRule>("transaction", transactionStatusForRule));
 		this.statusRule.run(factMap);
-		transactionStatusForRule = this.statusRule.getResult().get().getValue();
+		transactionStatusForRule = this.statusRule.getResult().orElseThrow(InvalidParameterException::new).getValue();
 
 		return transactionForStatusRuleConverter.convert(transactionStatusForRule);
 	}
@@ -98,22 +92,22 @@ public class TransactionServiceImpl implements TransactionService {
 	@Override
 	public List<TransactionResponse> search(final String iban, final String sortOrder) {
 
-		if (sortOrder == null) {
-			throw new NullArgumentException(sortOrderNullErrorMessage);
-		}
-		List<TransactionEntity> result = null;
+		String sort = Optional.ofNullable(sortOrder).orElse("");
+
+		List<TransactionEntity> result;
+		List<TransactionResponse> convertedResult = null;
 		
-		if (sortASC.equals(sortOrder.toUpperCase().trim())) {
+		if (sortASC.equals(sort.toUpperCase().trim())) {
 			result = transactionRepository.searchTransactionsFilterByIbanSortASCByAmount(iban);
-		} else if (sortDESC.equals(sortOrder.toUpperCase().trim())) {
+		} else if (sortDESC.equals(sort.toUpperCase().trim())) {
 			result = transactionRepository.searchTransactionsFilterByIbanSortDESCByAmount(iban);
 		} else {
 			throw new InvalidParameterException(sortOrderInvalidErrorMessage);
 		}
 		if (result!=null && !result.isEmpty()) {
-			return result.stream().map(e -> transactionEntityConverter.convert(e)).collect(Collectors.toList());
+			convertedResult = result.stream().map(transactionEntityConverter::convert).collect(Collectors.toList());
 		}
-		return null;
+		return convertedResult;
 	}
 
 }

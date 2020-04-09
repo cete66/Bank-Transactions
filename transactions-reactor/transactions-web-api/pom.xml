@@ -16,11 +16,6 @@
 			<artifactId>transactions-framework-test-utils</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		<!-- <dependency>
-			<groupId>com.bank</groupId>
-			<artifactId>transactions-coreservice-api</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency> -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>

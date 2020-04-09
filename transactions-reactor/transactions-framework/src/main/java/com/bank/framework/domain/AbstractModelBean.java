@@ -1,8 +1,8 @@
 package com.bank.framework.domain;
 
-import java.io.Serializable;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
+import java.io.Serializable;
 
 public abstract class AbstractModelBean implements Serializable{
 
