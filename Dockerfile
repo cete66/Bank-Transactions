@@ -1,4 +1,4 @@
-FROM maven:3.5-jdk-8-alpine
+FROM adoptopenjdk:11-jdk-openj9-bionic
 WORKDIR /Bank-Transactions
 COPY ./transactions-reactor /Bank-Transactions
 RUN mvn install
